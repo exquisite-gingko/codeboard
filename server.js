@@ -43,14 +43,14 @@ app.get('/new', function(req, res) {
     strokes: []
   });
   console.log(board);
-  board.save(function(err, board) {
-    if (err) { console.error(err); }
-    else {
-      console.log('board saved!');
-    }
+  board.save()
+  .then(function (board) {
+    res.redirect('/' + id);
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/');
   });
-  // Redirect to the new board.
-  res.redirect('/' + id);
 });
 
 
