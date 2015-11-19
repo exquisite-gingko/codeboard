@@ -51,9 +51,9 @@ grunt docco
 
 ## Team
 
-  - __Product Owner__: Clayton
-  - __Scrum Master__: Stephen
-  - __Development Team Members__: Mitchell, Michelle
+  - __Product Owner__: Anna Rogers
+  - __Scrum Master__: Aaron Ackerman
+  - __Development Team Members__: Bjarke Staun-Olsen, David Tsai
 
 
 ## Contributing
