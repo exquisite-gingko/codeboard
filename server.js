@@ -10,8 +10,11 @@ var io = require('socket.io')(http);
 var Board = require('./db/board');
 var port = process.env.PORT || 8080;
 var handleSocket = require('./server/sockets');
+var utils = require('./server/utils');
 
 // ## Routes
+var id = utils.createId();
+console.log(typeof id);
 
 // **Static folder for serving application assets**
 app.use('/', express.static(__dirname + '/public'));
@@ -33,8 +36,12 @@ app.get('/documentation', function(req, res) {
 // **Get a new whiteboard**
 app.get('/new', function(req, res) {
   // Create a new mongoose board model.
-  var board = new Board.boardModel({strokes: []});
-  var id = board._id.toString();
+  var id = utils.createId();
+  var board = new Board.boardModel({
+    id: id,
+    strokes: []
+  });
+  console.log(board);
   board.save(function(err, board) {
     if (err) { console.error(err); }
     else {
