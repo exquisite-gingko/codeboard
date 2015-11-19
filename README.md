@@ -1,6 +1,8 @@
 # Coderboard
 [See it live here!](http://hidden-castle-8290.herokuapp.com)
 
+Project inherited from SpazzingLicorice
+
 ## Table of Contents
 
 1. [Documentation](#Documentation)
