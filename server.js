@@ -59,9 +59,14 @@ app.get('/*', function(req, res) {
   var id = req.url.slice(1);
   Board.boardModel.findOne({id: id})
   .then(function (board) {
+    board.users++;
+    return  board.save();
+  })
+  .then(function (savedBoard) {
+    console.log(savedBoard.users);
     // Invoke [request handler](../documentation/sockets.html) for a new socket connection
     // with board id as the Socket.io namespace.
-    handleSocket(req.url, board, io);
+    handleSocket(req.url, savedBoard, io);
     // Send back whiteboard html template.
     res.sendFile(__dirname + '/public/board.html');
   })
