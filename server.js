@@ -39,6 +39,7 @@ app.get('/new', function(req, res) {
   var id = utils.createId();
   var board = new Board.boardModel({
     id: id,
+    users: 0,
     strokes: []
   });
   console.log(board);
@@ -56,18 +57,16 @@ app.get('/new', function(req, res) {
 // **Wildcard route & board id handler.**
 app.get('/*', function(req, res) {
   var id = req.url.slice(1);
-  Board.boardModel.findOne({id: id}, function(err, board) {
-    // If the board doesn't exist, or the route is invalid,
-    // then redirect to the home page.
-    if (err) {
-      res.redirect('/');
-    } else {
-      // Invoke [request handler](../documentation/sockets.html) for a new socket connection
-      // with board id as the Socket.io namespace.
-      handleSocket(req.url, board, io);
-      // Send back whiteboard html template.
-      res.sendFile(__dirname + '/public/board.html');
-    }
+  Board.boardModel.findOne({id: id})
+  .then(function (board) {
+    // Invoke [request handler](../documentation/sockets.html) for a new socket connection
+    // with board id as the Socket.io namespace.
+    handleSocket(req.url, board, io);
+    // Send back whiteboard html template.
+    res.sendFile(__dirname + '/public/board.html');
+  })
+  .catch(function (err) {
+    res.redirect('/');
   });
 });
 

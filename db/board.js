@@ -3,10 +3,12 @@
 // ##### [Back to Table of Contents](./tableofcontents.html)
 
 var mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 var db = require('./config');
 
 var boardSchema = new mongoose.Schema({
   id: String,
+  users: Number,
   strokes: Array
 });
 
