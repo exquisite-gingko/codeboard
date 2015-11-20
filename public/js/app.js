@@ -31,7 +31,7 @@ App.init = function() {
   });
 
   // **Whiteboard**
-
+  var lastPt = null;
   // Set properties of the whiteboard.
   App.canvas = $('#whiteboard');
   App.canvas[0].width = window.innerWidth;
@@ -73,6 +73,22 @@ App.init = function() {
     App.context.lineTo(x, y);
     App.context.stroke();
   };
+
+  App.touchDraw = function (e) {
+    e.preventDefault();
+    if (lastPt !== null) {
+      app.context.beginPath();
+      app.context.moveTo(lastPt.x, lastPt.y);
+      app.context.lineTo(e.touches[0].pageX, e.touches[0].pageY)
+      app.context.stroke();
+    }
+    lastPt = {x: e.touches[0].pageX, y: e.touches[0].pageY};
+  };
+
+  App.touchEnd = function (e) {
+    e.preventDefault();
+    lastPt = null;
+  }
 
   // Initialize before drawing: copy pen properties to ```App.context```, beginPath and set the starting coordinates to ```moveToX``` and ```moveToY```.
   App.initializeMouseDown = function(pen, moveToX, moveToY) {
