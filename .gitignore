@@ -32,3 +32,8 @@ db/mongokeys.js
 node_modules/
 .gitignore
 .elasticbeanstalk/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
