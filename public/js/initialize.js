@@ -93,7 +93,7 @@ $(function() {
   });
 
   //Here we can start making HTML5 code for touch events:
-  App.canvas.addEventListener('touchmove', function (event) {
+  App.canvas.on('touchmove', function (event) {
     for (var i = 0; i < event.touches.length; i++) {
       var touch = event.touches[i];
       App.context.beginPath();
@@ -101,7 +101,7 @@ $(function() {
       App.context.fill();
       App.context.stroke();
     }
-  }, false);
+  });
 
 
 });
