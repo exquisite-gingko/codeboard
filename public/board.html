@@ -10,7 +10,14 @@
 
   </head>
   <body>
-    <h1>Coderboard.</h1>
+    <h1>Codeboard</h1>
+    <div ng-controller='switchBoardsController as vm'>
+        <form ng-submit='vm.switchBoards()'>
+          <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
+          <button type="submit">Go</button>
+        </form>
+      </div>
+    <button class="pure-button new"><a href="/new">New Board</a></button>
 
     <video id="localVideo"></video>
     <div id="remoteVideos"></div>
@@ -43,7 +50,6 @@
             <label for="blue"></label>
           </div>
         </div>
-        <button class="pure-button new"><a href="/new">New Board</a></button>
         
         <!-- <button class='btn-tool btn-undo'>Undo</button> -->
       </div>

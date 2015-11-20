@@ -139,3 +139,18 @@ button:active {
 div.buttons {
   margin-top: 0.4em;
 }
+
+.goToExisting {
+  background-color:#ffffff;
+  -moz-border-radius:26px;
+  -webkit-border-radius:26px;
+  border-radius:26px;
+  border:2px solid #ededed;
+  display:inline-block;
+  cursor:pointer;
+  /*color:#387ae3;*/
+  font-size:15px;
+  padding:8px 56px;
+  text-decoration:none;
+  font-family: 'Montserrat', sans-serif;
+}

@@ -10,8 +10,11 @@ var io = require('socket.io')(http);
 var Board = require('./db/board');
 var port = process.env.PORT || 8080;
 var handleSocket = require('./server/sockets');
+var utils = require('./server/utils');
 
 // ## Routes
+var id = utils.createId();
+console.log(typeof id);
 
 // **Static folder for serving application assets**
 app.use('/', express.static(__dirname + '/public'));
@@ -33,34 +36,41 @@ app.get('/documentation', function(req, res) {
 // **Get a new whiteboard**
 app.get('/new', function(req, res) {
   // Create a new mongoose board model.
-  var board = new Board.boardModel({strokes: []});
-  var id = board._id.toString();
-  board.save(function(err, board) {
-    if (err) { console.error(err); }
-    else {
-      console.log('board saved!');
-    }
+  var id = utils.createId();
+  var board = new Board.boardModel({
+    id: id,
+    users: 0,
+    strokes: []
   });
-  // Redirect to the new board.
-  res.redirect('/' + id);
+  board.save()
+  .then(function (board) {
+    res.redirect('/' + id);
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.redirect('/');
+  });
 });
 
 
 // **Wildcard route & board id handler.**
 app.get('/*', function(req, res) {
   var id = req.url.slice(1);
-  Board.boardModel.findOne({id: id}, function(err, board) {
-    // If the board doesn't exist, or the route is invalid,
-    // then redirect to the home page.
-    if (err) {
-      res.redirect('/');
-    } else {
-      // Invoke [request handler](../documentation/sockets.html) for a new socket connection
-      // with board id as the Socket.io namespace.
-      handleSocket(req.url, board, io);
-      // Send back whiteboard html template.
-      res.sendFile(__dirname + '/public/board.html');
-    }
+  Board.boardModel.findOne({id: id})
+  .then(function (board) {
+    board.users++;
+    return  board.save();
+  })
+  .then(function (savedBoard) {
+    console.log(savedBoard.users);
+    // Invoke [request handler](../documentation/sockets.html) for a new socket connection
+    // with board id as the Socket.io namespace.
+    handleSocket(req.url, savedBoard, io);
+    // Send back whiteboard html template.
+    res.sendFile(__dirname + '/public/board.html');
+  })
+  .catch(function (err) {
+    res.redirect('/');
   });
 });
 

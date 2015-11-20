@@ -25,6 +25,18 @@ angular.module('whiteboard', ['ui.router'])
   };
 })
 
+.controller('switchBoardsController', function ($http, $location) {
+  console.log('hello');
+
+  var self = this;
+
+  self.switchBoards = function () {
+    console.log('running');
+    console.log('/' + self.boardId);
+    document.location = '/' + self.boardId;
+  };
+})
+
 // Set changePen method.
 // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
 .service('tools', function($rootScope) {
