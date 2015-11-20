@@ -42,7 +42,6 @@ app.get('/new', function(req, res) {
     users: 0,
     strokes: []
   });
-  console.log(board);
   board.save()
   .then(function (board) {
     res.redirect('/' + id);

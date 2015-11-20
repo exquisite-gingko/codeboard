@@ -18,13 +18,19 @@
 			<source src="assets/dayinthelifeshort-720p.mov" type="video/mp4">
 		</video>
 		<header id="header">
-			<h1>Coderboard</h1>
+			<h1>Codeboard</h1>
 			<p>Fast &nbsp;&bull;&nbsp; Free &nbsp;&bull;&nbsp; For Your Coding Interviews</p>
 			<div class="buttons">
 				<a href="/new">
 					<!-- <button class="pure-button"> -->
-					<button>Start Whiteboarding Now</button>
+					<button>Start a new whiteboard</button>
 				</a>
+			</div>
+			<div>
+				<form action='/' method='get'>
+					<input type='text' placeholder='Go to existing board' class='goToExisting'>
+					<input type='submit' value='Go' class='goToExisting'>
+				</form>
 			</div>
 			<div class="buttons">
 				<a href="/documentation">
