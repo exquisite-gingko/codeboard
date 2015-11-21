@@ -30,22 +30,7 @@ $(function() {
       console.log("User has started to draw.");
       start(e.offsetX, e.offsetY);
 
-<<<<<<< HEAD
-      // Initialize mouse position.
-      App.mouse.click = true;
-      App.mouse.x = e.offsetX;
-      App.mouse.y = e.offsetY;
 
-      // ```App.initializeMouseDown``` is from [app.js](../docs/app.html) where it initializes the pen and canvas before rendeirng.
-      App.initializeMouseDown(App.pen, App.mouse.x, App.mouse.y);
-
-      // Emit the pen object through socket.
-      App.socket.emit('start', App.pen);
-
-      // Add the first mouse coordinates to the ```stroke``` array for storage.
-      App.stroke.push([App.mouse.x, App.mouse.Y]);
-=======
->>>>>>> Refactored to remove repetition between click and touch events
     } else {
       console.log('Another user is drawing - please wait.');
     }
@@ -57,25 +42,8 @@ $(function() {
     // Allow user drawing only if other users are not drawing.
     if (!App.isAnotherUserActive) {
       if (App.mouse.click) {
-<<<<<<< HEAD
-        App.mouse.drag = true;
 
-        // Find x,y coordinates of the mouse dragging on the anvas.
-        var x = e.offsetX;
-        var y = e.offsetY;
-
-        // Render the drawing.
-        App.draw(x, y);
-        console.log("Currently drawing coordinates", [x, y]);
-
-        // Continue to push coordinates to stroke array (as part of storage).
-        App.stroke.push([x, y]);
-
-        // Emit x, y in a tuple through socket.
-        App.socket.emit('drag', [x, y]);
-=======
         drag(e.offsetX, e.offsetY);
->>>>>>> Refactored to remove repetition between click and touch events
       }
     } else {
       console.log('Another user is drawing - please wait.');
