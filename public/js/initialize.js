@@ -93,8 +93,9 @@ $(function() {
   });
 
   //Here we can start making HTML5 code for touch events:
-  App.canvas.on("touchmove", App.touchDraw, false);
-  App.canvas.on("touchend", App.touchEnd, false);
+  var touchZone = document.getElementById("whiteboard");
+  touchZone.addEventListener("touchmove", App.touchDraw, false);
+  touchZone.addEventListener("touchend", App.touchEnd, false);
 
 
 });
