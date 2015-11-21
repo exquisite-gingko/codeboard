@@ -15,18 +15,14 @@ body {
   line-height: 1.75em;
 }
 
-body {
-    width: 640px;
-    height: 451px;
+.slate {
+  background: url('http://truministry.com/wp-content/uploads/2013/03/93116072.jpg') repeat;
 }
-
 
 body {
   background: #fff;
   overflow: hidden;
   position: absolute;
-  /*width: 100%;
-  height: 100%;*/
 }
 
 video {
@@ -158,4 +154,12 @@ div.buttons {
   padding:8px 56px;
   text-decoration:none;
   font-family: 'Montserrat', sans-serif;
+}
+
+/*new styles*/
+
+/*style to add when you click on the eraser*/
+
+.eraserClick {
+   cursor: url('http://www.gravatar.com/avatar/06ededb95f1c0b1f4f9d987e06d7d82b?s=32&d=identicon&r=PG'), pointer;            
 }
