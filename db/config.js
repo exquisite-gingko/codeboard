@@ -4,13 +4,10 @@
 var mongoose = require('mongoose');
 
 // Currently configured for deployment. Change to this for development:
-// if (process.env.NODE_ENV === 'dev') {
-//   mongoose.connect('mongodb://localhost');
-//   // mongoose.connect('')
-// } else {
-//   mongoose.connect(process.env.MONGOLAB_URI);
-// }
-mongoose.connect('mongodb://aackerman050:hackreactor1@ds057234.mongolab.com:57234/coderboard');
+
+// ```mongoose.connect('mongodb://127.0.0.1');```
+// mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect('mongodb://127.0.0.1');
 
 var db = mongoose.connection;
 
