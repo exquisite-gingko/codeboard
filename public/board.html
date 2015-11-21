@@ -15,7 +15,7 @@
         <a href="#!" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down" ng-controller='switchBoardsController as vm'>
-          <li><a href="sass.html"><i class="material-icons">add</i></a></li>
+          <li><a href="/new"><i class="material-icons">add</i></a></li>
           <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
           <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
           <li><a href="sass.html"><i class="material-icons">settings</i></a></li>
@@ -35,11 +35,9 @@
     <div ng-controller='switchBoardsController as vm'>
       <form ng-submit='vm.switchBoards()'>
         <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
-        <button type="submit" style="display:inline;">Go</button>
-
+        <button type="submit">Go</button>
       </form>
     </div>
-    <button class="pure-button new"><a href="/new">New Board</a></button>
     <div class='whiteboard'>
 
       <!-- render this in ng-view probably -->
