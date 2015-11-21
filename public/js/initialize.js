@@ -18,6 +18,7 @@ $(function() {
   // Add the button collapse init for materialize
   $(".button-collapse").sideNav();
 
+  var lastPt = null;
   // **Mouse Events**
 
   // On mousedown detection, initialize drawing properties based on mouse coordinates.
@@ -92,14 +93,54 @@ $(function() {
   });
 
   // If the cursor leaves the canvas whiteboard, simply stop drawing any more elements (by triggering a 'dragend' event).
-  App.canvas.on('mouseleave', function(e) {
+  App.canvas.on('mouseleave', function (e) {
     App.canvas.trigger('dragend');
   });
 
   //Here we can start making HTML5 code for touch events:
+  //We have to manually select the canvas space being used to add touch events
   var touchZone = document.getElementById("whiteboard");
-  touchZone.addEventListener("touchmove", App.touchDraw, false);
-  touchZone.addEventListener("touchend", App.touchEnd, false);
+
+  touchZone.addEventListener("touchstart", function (e) {
+    App.mouse.click = true;
+    App.mouse.x = e.touches[0].pageX;
+    App.mouse.y = e.touches[0].pageY;
+
+    // ```App.initializeMouseDown``` is from [app.js](../docs/app.html) where it initializes the pen and canvas before rendeirng.
+    App.initializeMouseDown(App.pen, App.mouse.x, App.mouse.y);
+
+    // Emit the pen object through socket. 
+    App.socket.emit('start', App.pen);
+
+    // Add the first mouse coordinates to the ```stroke``` array for storage.
+    App.stroke.push([App.mouse.x, App.mouse.Y]);
+  }, false);
+
+  touchZone.addEventListener("touchmove", function (e) {
+    e.preventDefault();
+    if (lastPt !== null) {
+      if (App.mouse.click) {
+        App.mouse.drag = true;
+        App.context.beginPath();
+        App.context.moveTo(lastPt.x, lastPt.y);
+        var x = e.touches[0].pageX;
+        var y = e.touches[0].pageY;
+        App.draw(x, y);
+        App.stroke.push([x, y]);
+        App.socket.emit('drag', [x, y]);
+      }
+    }
+    lastPt = {x: e.touches[0].pageX, y: e.touches[0].pageY};
+  }, false);
+
+  touchZone.addEventListener("touchend", function (e) {
+    e.preventDefault();
+    lastPt = null;
+    App.mouse.drag = false;
+    App.mouse.click = false;
+    App.stroke = [];
+    App.socket.emit('end', null);
+  }, false);
 
 
 });

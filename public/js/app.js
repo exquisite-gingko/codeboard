@@ -31,7 +31,7 @@ App.init = function() {
   // });
 
   // **Whiteboard**
-  var lastPt = null;
+  
   // Set properties of the whiteboard.
   App.canvas = $('#whiteboard');
   App.canvas[0].width = window.innerWidth;
