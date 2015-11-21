@@ -214,14 +214,10 @@ app.get('/*', function(req, res) {
   var id = req.url.slice(1);
   Board.boardModel.findOne({id: id})
   .then(function (board) {
-    board.users++;
-    return  board.save();
-  })
-  .then(function (savedBoard) {
-    console.log(savedBoard.users);
+    console.log(board.users);
     // Invoke [request handler](../documentation/sockets.html) for a new socket connection
     // with board id as the Socket.io namespace.
-    handleSocket(req.url, savedBoard, io);
+    handleSocket(req.url, board, io);
     // Send back whiteboard html template.
     res.sendFile(__dirname + '/public/board.html');
   })

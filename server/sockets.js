@@ -11,10 +11,18 @@ var Board = require('../db/board');
 var connect = function(boardUrl, board, io) {
   // Set the Socket.io namespace to the boardUrl.
   var whiteboard = io.of(boardUrl);
-
+  
   whiteboard.once('connection', function(socket) {
+    //Get the board that the socket is connected to.
+    var id = socket.nsp.name.slice(1);
+    
     // Send the current state of the board to the client immediately on joining.
     socket.emit('join', board);
+
+    // increment #users on board
+    Board.boardModel.update({id: id}, {$inc: {users: 1}}, function (err, board) {
+      if (err) console.log(err);
+    });
 
     socket.on('start', function(pen) {
 
@@ -43,8 +51,6 @@ var connect = function(boardUrl, board, io) {
     socket.on('end', function() {
       var finishedStroke = socket.stroke;
 
-      //Get the board that the socket is connected to.
-      var id = socket.nsp.name.slice(1);
 
       //Update the board with the new stroke.
       Board.boardModel.update({id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
@@ -60,6 +66,8 @@ var connect = function(boardUrl, board, io) {
       //Delete the stroke object to make room for the next stroke.
       delete socket.stroke;
     });
+
+    
   });
 };
 
