@@ -1,0 +1,59 @@
+{
+  "name": "CodeBoard",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "A place for shared coding.",
+  "homepage_url": "http://extensionizr.com",
+  /*"icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },*/
+  "default_locale": "en",
+  "background": {
+    "page": "public/index.html",
+    "persistent": true
+  },
+  /*"options_page": "src/options/index.html",*/
+  "browser_action": {
+    /*"default_icon": "icons/icon19.png",*/
+    /*"default_title": "browser action demo",*/
+    "default_popup": "public/index.html"
+  },
+  "permissions": [
+    "bookmarks",
+    "chrome://favicon/",
+    "clipboardRead",
+    "clipboardWrite",
+    "contentSettings",
+    "contextMenus",
+    "cookies",
+    "fileBrowserHandler",
+    "tts",
+    "ttsEngine",
+    "history",
+    "idle",
+    "management",
+    "notifications",
+    "tabs",
+    "geolocation"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/*"
+      ],
+      "css": [
+        "public/css/style.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.google.com/*"
+      ],
+      "js": [
+        "server.js"
+      ]
+    }
+  ]
+}

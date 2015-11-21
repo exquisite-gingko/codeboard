@@ -14,9 +14,12 @@ $(function() {
   $('#localVideo').draggable();
   $('#remoteVideos').draggable();
 
+  // Add the button collapse init for materialize
+  $(".button-collapse").sideNav();
+
   // **Mouse Events**
 
-  // On mousedown detection, initialize drawing properties based on mouse coordinates. 
+  // On mousedown detection, initialize drawing properties based on mouse coordinates.
   App.canvas.on('mousedown', function(e) {
 
     // Allow user drawing only if other users are not drawing.
@@ -31,7 +34,7 @@ $(function() {
       // ```App.initializeMouseDown``` is from [app.js](../docs/app.html) where it initializes the pen and canvas before rendeirng.
       App.initializeMouseDown(App.pen, App.mouse.x, App.mouse.y);
 
-      // Emit the pen object through socket. 
+      // Emit the pen object through socket.
       App.socket.emit('start', App.pen);
 
       // Add the first mouse coordinates to the ```stroke``` array for storage.
@@ -60,7 +63,7 @@ $(function() {
         // Continue to push coordinates to stroke array (as part of storage).
         App.stroke.push([x, y]);
 
-        // Emit x, y in a tuple through socket. 
+        // Emit x, y in a tuple through socket.
         App.socket.emit('drag', [x, y]);
       }
     } else {
@@ -68,7 +71,7 @@ $(function() {
     }
   });
 
-  // On mouse dragend detection, tell socket that we have finished drawing. 
+  // On mouse dragend detection, tell socket that we have finished drawing.
   App.canvas.on('dragend', function(e) {
     if (!App.isAnotherUserActive) {
       App.mouse.drag = false;
@@ -91,6 +94,11 @@ $(function() {
   App.canvas.on('mouseleave', function(e) {
     App.canvas.trigger('dragend');
   });
+
+  //Here we can start making HTML5 code for touch events:
+  var touchZone = document.getElementById("whiteboard");
+  touchZone.addEventListener("touchmove", App.touchDraw, false);
+  touchZone.addEventListener("touchend", App.touchEnd, false);
 
 
 });
