@@ -86,6 +86,7 @@ App.init = function() {
   };
 
   App.touchEnd = function (e) {
+    console.log('touching ended');
     e.preventDefault();
     lastPt = null;
   }
