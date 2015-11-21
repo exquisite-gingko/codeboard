@@ -15,7 +15,6 @@
         <a href="#!" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-          
           <li><a href="sass.html"><i class="fa fa-plus-circle"></i></a></li>
           <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
           <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
@@ -24,6 +23,7 @@
           <!-- <li><a href="sass.html"><i class="material-icons">mic_off</i></a></li> -->
         </ul>
         <ul class="side-nav" id="mobile-demo">
+          <li><a href="sass.html">Join Board</a></li>
           <li><a href="sass.html">Turn Mic Off</a></li>
           <li><a href="sass.html">Turn Webcam Off</a></li>
           <li><a href="sass.html">Other Settings</a></li>
@@ -35,10 +35,10 @@
     <div ng-controller='switchBoardsController as vm'>
       <form ng-submit='vm.switchBoards()'>
         <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
-        <button type="submit">Go</button>
+        <button type="submit" style="display:inline;">Go</button>
       </form>
     </div>
-    <button class="pure-button new"><a href="/new">New Board</a></button>
+    <!-- <button class="pure-button new"><a href="/new">New Board</a></button> -->
     <div class='whiteboard'>
 
       <!-- render this in ng-view probably -->
@@ -68,10 +68,10 @@
       </div>
 
       <div class='pens'>
-        <div class='palette'>
+       <!--  <div class='palette'>
           <input type="checkbox" value="None" id="black" name="check" checked="checked" ng-click="vm.changePen('black')"/>
           <label for="black"></label>
-        </div>
+        </div> -->
         <div class='palette'>
           <input type="checkbox" value="None" id="red" name="check" ng-click="vm.changePen('red')"/>
           <label for="red"></label>
