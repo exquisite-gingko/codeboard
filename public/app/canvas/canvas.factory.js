@@ -1,14 +1,15 @@
 (function () {
 
   'use strict'
-  
+
   angular.module('app')
     .factory('canvasFactory', canvasFactory);
 
   function canvasFactory () {
     
     var services = {
-      init: init
+      init: init,
+      listeners: listeners
     };
 
     return services;
@@ -46,9 +47,9 @@
       // ```this.prevPixel``` contains only 1 [x,y] coordinate pair - the coordinates of the previous pixel drawn. This is used in ```this.socket.on('drag'...``` for smooth rendering of drawn elements by other users. 
       this.prevPixel = [];
 
-      this.draw = function (obj) {
-        obj.context.lineTo(x, y);
-        obj.context.stroke();
+      this.draw = function () {
+        this.context.lineTo(x, y);
+        this.context.stroke();
       }
 
       this.touchEnd = function (e) {
@@ -58,16 +59,16 @@
       }
 
       // Initialize before drawing: copy pen properties to ```App.context```, beginPath and set the starting coordinates to ```moveToX``` and ```moveToY```.
-      this.initializeMouseDown = function (obj, pen, moveToX, moveToY) {
+      this.initializeMouseDown = function (pen, moveToX, moveToY) {
 
         // Copy over current pen properties (e.g. fillStyle).
         for (var key in pen) {
-          obj.context[key] = pen[key];
+          this.context[key] = pen[key];
         }
 
         // Begin draw.
-        obj.context.beginPath();
-        obj.context.moveTo(moveToX, moveToY);
+        this.context.beginPath();
+        this.context.moveTo(moveToX, moveToY);
       };
 
       var ioRoom = window.location.href;

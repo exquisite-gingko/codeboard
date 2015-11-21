@@ -3,18 +3,6 @@
 // ##### [Back to Table of Contents](./tableofcontents.html)
 
 
-// Set up app properties.
-
-// (function () {
-//   'use strict'
-
-//   angular.module()
-//     .factory('init', init);
-
-//   function init()
-// })();
-
-
 var App = {};
 
 App.init = function() {

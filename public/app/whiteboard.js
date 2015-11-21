@@ -14,9 +14,9 @@
         });
     })
     // Set App to the root scope. 
-    .controller('canvas', function($rootScope, tools) {
-      $rootScope.app = App;
-    })
+    // .controller('canvas', function($rootScope, tools) {
+    //   $rootScope.app = App;
+    // })
     // Set toolbar for colour palette and eraser. 
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
