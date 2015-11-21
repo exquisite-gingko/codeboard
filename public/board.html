@@ -36,9 +36,10 @@
       <form ng-submit='vm.switchBoards()'>
         <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
         <button type="submit" style="display:inline;">Go</button>
+        
       </form>
     </div>
-    <!-- <button class="pure-button new"><a href="/new">New Board</a></button> -->
+    <button class="pure-button new"><a href="/new">New Board</a></button>
     <div class='whiteboard'>
 
       <!-- render this in ng-view probably -->
@@ -50,37 +51,18 @@
       </div>
     </div>
 
-    <div class="fixed-action-btn vertical" style="bottom: 20px; right: 24px;">
+    <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
        <a class="btn-floating btn-large red">
          <i class="fa fa-arrow-up"></i>
        </a>
        <ul>
-         <li><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
-         <li><a class="btn-floating amber darken-4"><i class="fa fa-pencil"></i></a></li>
-         <li><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
-         <li><a class="btn-floating green"><i class="fa fa-pencil"></i></a></li>
+         <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
+         <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
+         <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
+         <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
        </ul>
      </div>
 
-    <div class='toolbar' ng-controller='toolbar as vm'>
-      <div class='btn-erase' ng-click="vm.changePen('eraser')">
-        <img src="images/pinkeraser.png">
-      </div>
-
-      <div class='pens'>
-       <!--  <div class='palette'>
-          <input type="checkbox" value="None" id="black" name="check" checked="checked" ng-click="vm.changePen('black')"/>
-          <label for="black"></label>
-        </div> -->
-        <div class='palette'>
-          <input type="checkbox" value="None" id="red" name="check" ng-click="vm.changePen('red')"/>
-          <label for="red"></label>
-        </div>
-        <div class='palette'>
-          <input type="checkbox" value="None" id="blue" name="check" ng-click="vm.changePen('blue')"/>
-          <label for="blue"></label>
-        </div>
-      </div>
     </div>
     </div>
   </body>

@@ -34,7 +34,9 @@
       } else {
         console.log("The user is using the pen.");
         $rootScope.app.pen.lineWidth = 5;
+        console.log($rootScope.app.pen.strokeStyle);
         $rootScope.app.pen.strokeStyle = option;
+        $rootScope.app.pen.lineWidth = 2;
       }
     };
     return {
