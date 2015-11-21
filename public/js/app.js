@@ -50,8 +50,8 @@ App.init = function() {
   // To add more new drawing features, i.e. different colours, thickness, add them to the ```App.pen``` object.
   App.pen = {
     fillStyle: 'solid',
-    strokeStyle: "black",
-    lineWidth: 1,
+    strokeStyle: '#000000',
+    lineWidth: 2,
     lineCap: 'round'
   };
 
