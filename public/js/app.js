@@ -51,7 +51,7 @@ App.init = function() {
   App.pen = {
     fillStyle: 'solid',
     strokeStyle: "black",
-    lineWidth: 5,
+    lineWidth: 1,
     lineCap: 'round'
   };
 

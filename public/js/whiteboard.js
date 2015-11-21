@@ -28,6 +28,7 @@
     var changePen = function(option) {
       if (option === 'eraser') {
         console.log("The user is using the eraser.");
+        $('html,body').css('cursor','crosshair');
         $rootScope.app.pen.lineWidth = 50;
         $rootScope.app.pen.strokeStyle = '#fff';
       } else {
