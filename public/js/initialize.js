@@ -75,6 +75,7 @@ $(function() {
   }, false);
 
   touchZone.addEventListener("touchmove", function (e) {
+    console.log('touching');
     e.preventDefault();
     if (lastPt !== null) {
       if (App.mouse.click) {
