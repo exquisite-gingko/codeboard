@@ -15,18 +15,14 @@ body {
   line-height: 1.75em;
 }
 
-body {
-    width: 640px;
-    height: 451px;
+.slate {
+  background: url('http://truministry.com/wp-content/uploads/2013/03/93116072.jpg') repeat;
 }
-
 
 body {
   background: #fff;
   overflow: hidden;
   position: absolute;
-  /*width: 100%;
-  height: 100%;*/
 }
 
 video {
