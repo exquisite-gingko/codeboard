@@ -5,14 +5,14 @@
 
 // Set up app properties.
 
-(function () {
-  'use strict'
+// (function () {
+//   'use strict'
 
-  angular.module()
-    .factory('init', init);
+//   angular.module()
+//     .factory('init', init);
 
-  function init()
-})();
+//   function init()
+// })();
 
 
 var App = {};
