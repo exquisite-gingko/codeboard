@@ -16,19 +16,19 @@ App.init = function() {
   //**Video Chat Functionality** 
 
   // Create a video chat Object.
-  var webrtc = new SimpleWebRTC({
-    // **localVideoEl**: the ID/element DOM element that will hold the current user's video
-    localVideoEl: 'localVideo',
-    // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
-    remoteVideosEl: 'remoteVideos',
-    // **autoRequestMedia**: immediately ask for camera access
-    autoRequestMedia: true
-  });
+  // var webrtc = new SimpleWebRTC({
+  //   // **localVideoEl**: the ID/element DOM element that will hold the current user's video
+  //   localVideoEl: 'localVideo',
+  //   // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
+  //   remoteVideosEl: 'remoteVideos',
+  //   // **autoRequestMedia**: immediately ask for camera access
+  //   autoRequestMedia: true
+  // });
 
-  // The room name is the same as our socket connection.
-  webrtc.on('readyToCall', function() {
-    webrtc.joinRoom(ioRoom);
-  });
+  // // The room name is the same as our socket connection.
+  // webrtc.on('readyToCall', function() {
+  //   webrtc.joinRoom(ioRoom);
+  // });
 
   // **Whiteboard**
   var lastPt = null;
@@ -77,10 +77,10 @@ App.init = function() {
   App.touchDraw = function (e) {
     e.preventDefault();
     if (lastPt !== null) {
-      app.context.beginPath();
-      app.context.moveTo(lastPt.x, lastPt.y);
-      app.context.lineTo(e.touches[0].pageX, e.touches[0].pageY)
-      app.context.stroke();
+      App.context.beginPath();
+      App.context.moveTo(lastPt.x, lastPt.y);
+      App.context.lineTo(e.touches[0].pageX, e.touches[0].pageY)
+      App.context.stroke();
     }
     lastPt = {x: e.touches[0].pageX, y: e.touches[0].pageY};
   };
