@@ -10,20 +10,23 @@
 
   </head>
   <body>
-    <nav>
-      <div class="nav-wrapper slate">
+    <nav class="slate">
+      <div class="nav-wrapper">
         <a href="#!" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down" ng-controller='switchBoardsController as vm'>
-          <li><a href="/new"><i class="material-icons">add</i></a></li>
-          <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
-          <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
-          <li><a href="sass.html"><i class="material-icons">settings</i></a></li>
+            
+                <li><a href="/new"><i class="material-icons">add</i></a></li>
+                <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
+                <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
+                <li><a href="sass.html"><i class="material-icons">settings</i></a></li>
+              
           <!-- <li><a href="sass.html"><i class="material-icons">videocam_off</i></a></li> -->
           <!-- <li><a href="sass.html"><i class="material-icons">mic_off</i></a></li> -->
         </ul>
         <ul class="side-nav" id="mobile-demo">
-          <li><a href="/new">Join Board</a></li>
+
+          <li><a href="/new">New Board</a></li>
           <li><a href="sass.html">Turn Mic Off</a></li>
           <li><a href="sass.html">Turn Webcam Off</a></li>
           <li><a href="sass.html">Other Settings</a></li>
@@ -32,12 +35,16 @@
         </ul>
       </div>
     </nav>
+    
     <div ng-controller='switchBoardsController as vm'>
-      <form ng-submit='vm.switchBoards()'>
-        <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
-        <button type="submit">Go</button>
-      </form>
+        <form ng-submit='vm.switchBoards()'>
+          <div class="join">
+            <input type='text' placeholder='Existing board' ng-model='vm.boardId'/>
+          </div>
+          <input type="submit" value='Go'/>
+        </form>
     </div>
+
     <div class='whiteboard'>
 
       <!-- render this in ng-view probably -->
@@ -55,6 +62,7 @@
        </a>
        <ul>
          <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
+         <li ng-click="vm.changePen('black')"><a class="btn-floating black"><i class="fa fa-pencil"></i></a></li>
          <li ng-click="vm.changePen('orange')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
          <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
          <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
