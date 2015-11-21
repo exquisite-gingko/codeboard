@@ -141,6 +141,7 @@ div.buttons {
   margin-top: 0.4em;
 }
 
+
 .goToExisting {
   background-color:#ffffff;
   -moz-border-radius:26px;
@@ -155,5 +156,10 @@ div.buttons {
   text-decoration:none;
   font-family: 'Montserrat', sans-serif;
 }
-
+/*
+.borderCircle {
+  border: 1px solid white;
+  border-radius: 100px;
+}
+*/
 
