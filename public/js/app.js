@@ -5,6 +5,16 @@
 
 // Set up app properties.
 
+// (function () {
+//   'use strict'
+
+//   angular.module()
+//     .factory('init', init);
+
+//   function init()
+// })();
+
+
 var App = {};
 
 App.init = function() {
@@ -31,7 +41,7 @@ App.init = function() {
   // });
 
   // **Whiteboard**
-  var lastPt = null;
+  
   // Set properties of the whiteboard.
   App.canvas = $('#whiteboard');
   App.canvas[0].width = window.innerWidth;
