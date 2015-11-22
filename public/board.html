@@ -11,12 +11,12 @@
   </head>
   <body>
       
-    <!-- Modal Structure -->
+    <!-- Modal Structure for sign in button-->
     <div id="modal1" class="modal">
       <form class="modal-content">
         <h4>Sign In</h4>
         Email:<input type='text' placeholder='joeBlogs@gmail.com'/>
-        Password:<input type='password' placeholder='Super secret stuff'/>
+        Password:<input type='password' placeholder='Super secret password'/>
       </form>
       <div class="modal-footer">
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
@@ -31,7 +31,8 @@
       <li><a href="#!">three</a></li>
     </ul>
 
-    <nav class="slate">
+    <!-- main nav icons -->
+    <nav class="slate z-depth-0">
       <div class="nav-wrapper">
         <a href="#" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -42,11 +43,11 @@
                 <a class="waves-effect waves-light btn">Sign Out</a>
                 <li><a href="/new"></a></li>
                 <li><a href="/new"><i class="material-icons">add</i></a></li>
-                <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
-                <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
+                <!-- <li><a href="sass.html"><i class="material-icons">mic</i></a></li> -->
+                <!-- <li><a href="sass.html"><i class="material-icons">videocam</i></a></li> -->
                 <!-- <li><a href="sass.html"><i class="material-icons">settings</i></a></li> -->
                 <li><a href="#"> <i class="fa fa-floppy-o"></i></a></li>
-                <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o"></i><i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o"></i></a></li>
 
               
           <!-- <li><a href="sass.html"><i class="material-icons">videocam_off</i></a></li> -->
@@ -87,7 +88,7 @@
     </div>
 
     <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
-       <a class="btn-floating btn-large red">
+       <a class="btn-floating btn-medium red">
          <i class="fa fa-arrow-up"></i>
        </a>
        <ul>
