@@ -10,16 +10,44 @@
 
   </head>
   <body>
+      
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+      <form class="modal-content">
+        <h4>Sign In</h4>
+        Email:<input type='text' placeholder='joeBlogs@gmail.com'/>
+        Password:<input type='password' placeholder='Super secret stuff'/>
+      </form>
+      <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      </div>
+    </div>
+    <!-- details for drop down where to save files -->
+    <ul id="dropdown1" class="dropdown-content">
+      <li><a href="#!">one</a></li>
+      <li class="divider"></li>
+      <li><a href="#!">two</a></li>
+      <li class="divider"></li>
+      <li><a href="#!">three</a></li>
+    </ul>
+
     <nav class="slate">
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo">CodeBoard</a>
+        <a href="#" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down" ng-controller='switchBoardsController as vm'>
-            
+                
+                <!-- Modal Trigger -->
+                <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Sign In</a>
+                <a class="waves-effect waves-light btn">Sign Out</a>
+                <li><a href="/new"></a></li>
                 <li><a href="/new"><i class="material-icons">add</i></a></li>
                 <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
                 <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
-                <li><a href="sass.html"><i class="material-icons">settings</i></a></li>
+                <!-- <li><a href="sass.html"><i class="material-icons">settings</i></a></li> -->
+                <li><a href="#"> <i class="fa fa-floppy-o"></i></a></li>
+                <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o"></i><i class="material-icons right">arrow_drop_down</i></a></li>
+
               
           <!-- <li><a href="sass.html"><i class="material-icons">videocam_off</i></a></li> -->
           <!-- <li><a href="sass.html"><i class="material-icons">mic_off</i></a></li> -->
@@ -27,6 +55,7 @@
         <ul class="side-nav" id="mobile-demo">
 
           <li><a href="/new">New Board</a></li>
+          <li><a href="#">Old codeboards</a></li>
           <li><a href="sass.html">Turn Mic Off</a></li>
           <li><a href="sass.html">Turn Webcam Off</a></li>
           <li><a href="sass.html">Other Settings</a></li>
@@ -35,7 +64,8 @@
         </ul>
       </div>
     </nav>
-    
+
+
     <div ng-controller='switchBoardsController as vm'>
         <form ng-submit='vm.switchBoards()'>
           <div class="join">

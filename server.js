@@ -59,7 +59,7 @@ app.get('/*', function(req, res) {
   Board.boardModel.findOne({id: id})
   .then(function (board) {
     board.users++;
-    return  board.save();
+    return board.save();
   })
   .then(function (savedBoard) {
     console.log(savedBoard.users);
