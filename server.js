@@ -111,7 +111,7 @@ app.post('/api/signUp', function (req, res) {
   })
   .catch(function (err) {
     console.log(err);
-    res.status(403).body(err);
+    res.status(500).send();
   });
 });
 
@@ -130,29 +130,32 @@ app.post('/api/login', function (req, res) {
       res.status(200).redirect('/new');
     } else {
       console.log('bad pass');
-      res.status(401).body('Incorrect Password');
+      res.status(401).json({message:'Incorrect Password'});
     }
   })
   .catch(function (err) {
     console.log(err);
-    res.status(404).body(err);
+    res.status(500).send();
   });
 });
 
 //request all the board data from the database for the specific user
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
-  //var user = req.session.user;
+  console.log('session-----', req.session);
+  var user = req.session.user;
   //USERS TABLE CURRENTLY DOES NOT HAVE AN EMAIL FIELD!!!
   Board.boardSchema.find({})
   .then(function (boards) {
     var data = boards.map(function (board) {
+      console.log('boardName', boardName);
       return board.name;//CURRENTLY NO BOARDS HAVE NAMES!
     });
-    res.status(200).body(data);
+    console.log(data);
+    // res.status(200).body(data);
   })
   .catch(function (err) {
-    res.status(404).body('None Found');
+    res.status(500).json({message:'None Found'});
   });
 });
 
@@ -166,7 +169,7 @@ app.get('/api/getOneBoard', function (req, res) {
     res.redirect('/'+boardId);
   })
   .catch(function (err) {
-    res.status(404).body('Board Not Found');
+    res.status(500).json({message:'Board Not Found'});
   });
 });
   
@@ -175,20 +178,19 @@ app.get('/api/getOneBoard', function (req, res) {
 app.post('/api/save', function (req, res) {
   //take the name saved with it and get the user details from the session and save the new board
   var newBoardName = req.body.name;
-  //var user = req.session.user;
+  var user = req.session.user;
   Board.boardSchema.findOne({ userEmail: user})
   .then(function (board) {
     var query = { boardName : board.boardName };
     var options = {new: true};
-    //?!?!?!?!?!
-    Board.boardSchema.findOneAndUpdate(query, { $set: { boardName: newBoardName }}, options)
-    .then(function (board) {
-      res.status(200).body('Board Name Saved');
-      //TRIGGER GET ON CLIENT TO UODATE LIST OF SAVED BOARDS
-    })
+    return Board.boardSchema.findOneAndUpdate(query, { $set: { boardName: newBoardName }}, options);
+  })
+  .then(function (board) {
+    res.status(200).body('Board Name Saved');
+    //TRIGGER GET ON CLIENT TO UODATE LIST OF SAVED BOARDS
   })
   .catch(function (err) {
-    res.status(404).body('Error Saving File');
+    res.status(500).json({message:'Error Saving File'});
   });
   
 });
