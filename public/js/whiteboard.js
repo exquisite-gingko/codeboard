@@ -20,6 +20,7 @@
     // Set toolbar for colour palette and eraser. 
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
+    .controller('auth', signUp)
     // Set changePen method.
     // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
     .service('tools', tools);
@@ -59,6 +60,12 @@
       console.log('/' + self.boardId);
       document.location = '/' + self.boardId;
     };
+  }
+
+  function signUp () {
+    var self = this;
+    //wail
+    console.log('clicked signup');
   }
 
 })();
