@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  angular.module('whiteboard', ['ui.router'])
+  angular.module('whiteboard', ['ngAnimate','ui.router'])
     .config(function($stateProvider) {
       $stateProvider
         .state('eraser', {
@@ -20,6 +20,9 @@
     // Set toolbar for colour palette and eraser. 
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
+    .controller('popOut', function($scope) {
+
+    })
     // Set changePen method.
     // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
     .service('tools', tools);
@@ -51,6 +54,10 @@
       console.log("The user chose the tool", $element);
       $('input').not($('#' + option)).attr('checked', false);
     };
+    self.boardOut = false;
+    self.isthisworking = function () {
+      console.log('working', self.boardOut);
+    }
   }
 
   function switchBoardsCtrl ($http, $location) {

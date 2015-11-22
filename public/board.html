@@ -43,28 +43,40 @@
       <!-- render this in ng-view probably -->
       <div class='board-frame'>
 
-        <canvas id="whiteboard" ng-controller="canvas">
-        </canvas>
+        <canvas id="whiteboard" ng-controller="canvas"></canvas>
 
       </div>
     </div>
 
-    <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
-       <a class="btn-floating btn-large red">
-         <i class="fa fa-arrow-up"></i>
-       </a>
-       <ul>
-         <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
-         <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
-         <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
-         <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
-       </ul>
-     </div>
 
+    <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
+      <div id="firepad" ng-show="vm.boardOut" style="border:1px solid #dddddd;background:orange;width:700px;height:650px">
+        
+      </div>
+      <a class="btn-floating btn-large red"><i class="fa fa-arrow-up"></i></a>
+      <ul>
+        <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
+        <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
+        <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
+        <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
+        <li ng-click="vm.boardOut = !vm.boardOut"><a class="btn-floating deep-purple darken-3"><i class="fa fa-keyboard-o"></i></a></li>
+      </ul>
+      
     </div>
-    </div>
+
+
   </body>
 
+
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
+
+<!-- Firepad -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.css" />
+<script src="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.min.js"></script>
 
 <script src="http://simplewebrtc.com/latest.js"></script>
 <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
@@ -74,6 +86,7 @@
 <!-- scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.2/angular-animate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 <script src="app/app.js"></script>
 <script src='app/whiteboard.js'></script>
