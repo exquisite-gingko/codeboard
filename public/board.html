@@ -68,15 +68,7 @@
   </body>
 
 
-<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
 
-<!-- CodeMirror -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
-
-<!-- Firepad -->
-<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.css" />
-<script src="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.min.js"></script>
 
 <script src="http://simplewebrtc.com/latest.js"></script>
 <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
@@ -91,4 +83,22 @@
 <script src="app/app.js"></script>
 <script src='app/whiteboard.js'></script>
 <script src="app/initialize.js"></script>
+
+<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
+
+<!-- Firepad -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.css" />
+<script src="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.min.js"></script>
+
+<script>
+  var firepadRef = new Firebase('burning-inferno-4771.firebaseIO.com');
+  var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
+  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
+      { richTextShortcuts: true, richTextToolbar: true, defaultText: 'Hello, World!' });
+</script>
 </html>
