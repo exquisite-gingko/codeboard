@@ -32,6 +32,12 @@
         </ul>
       </div>
     </nav>
+
+    
+    <div class="sample-show-hide" id="firepad" ng-controller="toolbar as vm" ng-show="vm.keyboardState()" ng-animate="'box'" style="border:1px solid #dddddd;background:orange;width:100%;height:650px">
+        
+    </div>
+
     <div ng-controller='switchBoardsController as vm'>
       <form ng-submit='vm.switchBoards()'>
         <input type='text' placeholder='Go to existing board' ng-model='vm.boardId'/>
@@ -50,16 +56,14 @@
 
 
     <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
-      <div id="firepad" ng-show="vm.boardOut" style="border:1px solid #dddddd;background:orange;width:700px;height:650px">
-        
-      </div>
+
       <a class="btn-floating btn-large red"><i class="fa fa-arrow-up"></i></a>
       <ul>
         <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
         <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
         <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
         <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
-        <li ng-click="vm.boardOut = !vm.boardOut"><a class="btn-floating deep-purple darken-3"><i class="fa fa-keyboard-o"></i></a></li>
+        <li ng-click="vm.keyboardToggle()"><a class="btn-floating deep-purple darken-3"><i class="fa fa-keyboard-o"></i></a></li>
       </ul>
       
     </div>
@@ -97,8 +101,12 @@
 
 <script>
   var firepadRef = new Firebase('burning-inferno-4771.firebaseIO.com');
-  var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
-  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
-      { richTextShortcuts: true, richTextToolbar: true, defaultText: 'Hello, World!' });
+  var codeMirror = CodeMirror(document.getElementById('firepad'), {
+    lineNumbers: true,
+    mode: 'javascript'
+  });
+  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror, {
+    defaultText: 'JavaScript Editing with Firepad!' 
+  });
 </script>
 </html>

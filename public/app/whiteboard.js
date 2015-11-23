@@ -23,9 +23,29 @@
     .controller('popOut', function($scope) {
 
     })
+    .factory('keyboard', keyboard)
     // Set changePen method.
     // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
     .service('tools', tools);
+
+  var keyDisplay = false;
+
+  function keyboard () {
+
+    var toggle = function () {
+      keyDisplay = !keyDisplay
+      console.log(keyDisplay);
+    }
+
+    var state = function () {
+      return keyDisplay;
+    }
+
+    return {
+      toggle: toggle,
+      state: state
+    };
+  }
 
   function tools ($rootScope) {
     var changePen = function(option) {
@@ -47,7 +67,7 @@
     };
   }
 
-  function toolBar ($element, tools) {
+  function toolBar ($element, tools, keyboard) {
     var self = this;
     self.changePen = function (option) {
       tools.changePen(option);
@@ -55,8 +75,12 @@
       $('input').not($('#' + option)).attr('checked', false);
     };
     self.boardOut = false;
-    self.isthisworking = function () {
-      console.log('working', self.boardOut);
+    self.keyboardToggle = function () {
+      console.log(keyboard.toggle);
+      keyboard.toggle();
+    }
+    self.keyboardState = function() {
+      return keyboard.state();
     }
   }
 
