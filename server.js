@@ -26,15 +26,16 @@ app.use(session({
   cookie: { maxAge: 679000000 }
 }));
 
-// ## Routes
-var id = utils.createId();
-console.log(typeof id);
 
 // **Static folder for serving application assets**
 app.use('/', express.static(__dirname + '/public'));
 
 // **Static folder for serving documentation**
 app.use('/documentation', express.static(__dirname + '/docs'));
+
+// ## Routes
+var id = utils.createId();
+console.log(typeof id);
 
 // **Home Page**
 app.get('/', function(req, res) {
@@ -92,26 +93,6 @@ app.post('/api/signUp', function (req, res) {
   });
 });
 
-//**Wildcard route & board id handler.**
-app.get('/*', function(req, res) {
-  var id = req.url.slice(1);
-  Board.boardModel.findOne({id: id})
-  .then(function (board) {
-    board.users++;
-    return board.save();
-  })
-  .then(function (savedBoard) {
-    console.log('savedboard-users',savedBoard.users, 'IN BJARKE FUNCTION');
-    // Invoke [request handler](../documentation/sockets.html) for a new socket connection
-    // with board id as the Socket.io namespace.
-    handleSocket(req.url, savedBoard, io);
-    // Send back whiteboard html template.
-    res.sendFile(__dirname + '/public/board.html');
-  })
-  .catch(function (err) {
-    res.redirect('/');
-  });
-});
 
 
 //check the user detials in the database
@@ -126,7 +107,7 @@ app.post('/api/login', function (req, res) {
       req.session.user = user.email;
       console.log('session Last bit', req.session);
       //NNED THIS TO STAY ON THE SAME BOARD
-      res.status(200);
+      res.status(200).json({message:user});
     } else {
       console.log('bad pass');
       res.status(401).json({message:'Incorrect Password'});
@@ -147,7 +128,7 @@ app.get('/api/userBoards', function (req, res) {
   Board.boardModel.find({})
   .then(function (boards) {
     var data = boards.map(function (board) {
-      console.log('boardName CURRENT', boardName);
+      console.log('boardName CURRENT', board.name);
       return board.name;//CURRENTLY NO BOARDS HAVE NAMES!
     });
     console.log('all names if the saved boards',data);
@@ -190,6 +171,28 @@ app.post('/api/save', function (req, res) {
 
 
 //LOGOUT
+
+
+//**Wildcard route & board id handler.**
+app.get('/*', function(req, res) {
+  var id = req.url.slice(1);
+  Board.boardModel.findOne({id: id})
+  .then(function (board) {
+    if (!board) {
+      return res.redirect('/new');
+    }
+    board.users++;
+    return board.save();
+  })
+  .then(function (savedBoard) {
+    console.log('savedboard-users',savedBoard.users, 'IN BJARKE FUNCTION');
+    // Invoke [request handler](../documentation/sockets.html) for a new socket connection
+    // with board id as the Socket.io namespace.
+    handleSocket(req.url, savedBoard, io);
+    // Send back whiteboard html template.
+    res.sendFile(__dirname + '/public/board.html');
+  });
+});
 
 
 // **Start the server.**
