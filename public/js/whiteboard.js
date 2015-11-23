@@ -20,7 +20,7 @@
     // Set toolbar for colour palette and eraser. 
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
-    .controller('auth', signUp)
+    .controller('auth', auth)
     // Set changePen method.
     // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
     .service('tools', tools);
@@ -62,10 +62,41 @@
     };
   }
 
-  function signUp () {
+  function auth ($http) {
     var self = this;
-    //wail
-    console.log('clicked signup');
+    self.signUp = function() {
+      var data = { email : self.email, password: self.password };
+      return $http({
+        method: 'POST',
+        url: '/api/signUp',
+        data: data
+        })
+      .then(function (response) {
+        console.log('response', response);
+        return response;
+      })
+      .catch(function (err) {
+        console.log('Error Saving Credentials');
+      });
+    };
+    self.login = function() {
+      console.log('in login');
+      var data = { email : self.email, password: self.password };
+      return $http({
+        method: 'POST',
+        url: '/api/login',
+        data: data
+        })
+      .then(function (response) {
+        console.log('response', response);
+        return response;
+      })
+      .catch(function (err) {
+        console.log('Error Matching Password');
+      });
+    };
   }
+
+
 
 })();

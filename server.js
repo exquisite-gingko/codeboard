@@ -55,7 +55,7 @@ app.get('/new', function(req, res) {
 
   var board = new Board.boardModel({
     id: id,
-    //boardName: OPTIONAL
+    boardName: 'null',
     userEmail: req.session.user,
     users: 0,
     strokes: []
@@ -71,6 +71,28 @@ app.get('/new', function(req, res) {
   });
 });
 
+//post the users details to the database
+app.post('/api/signUp', function (req, res) {
+  console.log('body',req.body);
+  console.log('IN signUp');
+  var email = req.body.email;
+  var password = req.body.password;
+  var user = new Board.userModel({
+    email: email,
+    password: password
+  });
+  user.save()
+  .then(function (user) {
+    //send the response to the /new route
+    console.log('sending to /new');
+    req.session.user = user.email;
+    res.redirect('/new');
+  })
+  .catch(function (err) {
+    console.log(err);
+    res.status(500).send();
+  });
+});
 
 //**Wildcard route & board id handler.**
 app.get('/*', function(req, res) {
@@ -93,27 +115,6 @@ app.get('/*', function(req, res) {
   });
 });
 
-//post the users details to the database
-app.post('/api/signUp', function (req, res) {
-  console.log(req.body);
-  console.log('signUp');
-  var email = req.body.email;
-  var password = req.body.password;
-  var user = new Board.userModel({
-    email: email,
-    password: password
-  });
-  user.save()
-  .then(function (user) {
-    //send the response to the /new route
-    req.session.user = user.email;
-    res.redirect('/new');
-  })
-  .catch(function (err) {
-    console.log(err);
-    res.status(500).send();
-  });
-});
 
 //check the user detials in the database
 app.post('/api/login', function (req, res) {
@@ -142,16 +143,15 @@ app.post('/api/login', function (req, res) {
 //request all the board data from the database for the specific user
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
-  console.log('session-----', req.session);
+  console.log('session-----', req.session.user);
   var user = req.session.user;
-  //USERS TABLE CURRENTLY DOES NOT HAVE AN EMAIL FIELD!!!
-  Board.boardSchema.find({})
+  Board.boardModel.find({})
   .then(function (boards) {
     var data = boards.map(function (board) {
       console.log('boardName', boardName);
       return board.name;//CURRENTLY NO BOARDS HAVE NAMES!
     });
-    console.log(data);
+    console.log('all names if the saved boards',data);
     // res.status(200).body(data);
   })
   .catch(function (err) {
@@ -162,11 +162,11 @@ app.get('/api/userBoards', function (req, res) {
 //ON CLICK OF ONE OF THESE BOARDS DISPALYED ON THE SCREEN
 //go to the database and get the id of the board and redirect to /+id
 app.get('/api/getOneBoard', function (req, res) {
-  //var user = req.session.user; //email add
-  Board.boardSchema.findOne({user:user})
+  var user = req.session.user; //email add
+  Board.boardModel.findOne({user:user})
   .then(function (user) {
     var boardId = user.id;
-    res.redirect('/'+boardId);
+    res.redirect('/'+ boardId);
   })
   .catch(function (err) {
     res.status(500).json({message:'Board Not Found'});
@@ -179,7 +179,7 @@ app.post('/api/save', function (req, res) {
   //take the name saved with it and get the user details from the session and save the new board
   var newBoardName = req.body.name;
   var user = req.session.user;
-  Board.boardSchema.findOne({ userEmail: user})
+  Board.boardModel.findOne({ userEmail: user})
   .then(function (board) {
     var query = { boardName : board.boardName };
     var options = {new: true};
