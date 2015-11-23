@@ -64,6 +64,7 @@
 
   function auth ($http) {
     var self = this;
+
     self.signUp = function() {
       var data = { email : self.email, password: self.password };
       return $http({
@@ -79,8 +80,9 @@
         console.log('Error Saving Credentials');
       });
     };
+
     self.login = function() {
-      console.log('in login');
+      console.log('in login FUNCTION');
       var data = { email : self.email, password: self.password };
       return $http({
         method: 'POST',
@@ -88,13 +90,49 @@
         data: data
         })
       .then(function (response) {
-        console.log('response', response);
-        return response;
+        console.log('response login', response);
+        // return response;
+        self.getFiles();
       })
       .catch(function (err) {
         console.log('Error Matching Password');
       });
     };
+
+    //NOT SURE THIS FUNCTION WORKING UNTIL FILES BEING SAVED!!
+    self.getFiles = function () {
+      console.log('getting files!');
+      return $http({
+        method: 'GET',
+        url: '/api/userBoards'
+      })
+      .then(function (response) {
+        console.log('response GETTING', response);
+        //append these files to the screen!
+      })
+      .catch(function (err) {
+        console.log('Error Finding Any Saved Boards');
+      });
+    };
+
+    self.saveFile = function () {
+      console.log('saving FILES!');
+      var data = { fileName: self.fileName };
+      return $http({
+        method: 'POST',
+        url: '/api/save',
+        data: data
+      })
+      .then(function (response) {
+        console.log('response SAVE', response);
+        //trigger get function to update the files available to the user
+        self.getFiles();
+      })
+      .catch(function (err) {
+        console.log('Error Saving Files');
+      });
+    };
+
   }
 
 

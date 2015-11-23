@@ -23,7 +23,7 @@ app.use(session({
   secret: 'nofflePenguin',
   resave: false,
   // saveUninitialized: true,
-  cookie: { maxAge: 6000000 }
+  cookie: { maxAge: 679000000 }
 }));
 
 // ## Routes
@@ -50,7 +50,7 @@ app.get('/documentation', function(req, res) {
 // **Get a new whiteboard**
 app.get('/new', function(req, res) {
   // Create a new mongoose board model.
-  console.log('in new board session----------', req.session.user);
+  console.log('IN NEW BOARD');
   var id = utils.createId();
 
   var board = new Board.boardModel({
@@ -62,7 +62,6 @@ app.get('/new', function(req, res) {
   });
   board.save()
   .then(function (board) {
-    console.log('redirect to Bjarke function');
     res.redirect('/' + id);
   })
   .catch(function (err) {
@@ -73,7 +72,6 @@ app.get('/new', function(req, res) {
 
 //post the users details to the database
 app.post('/api/signUp', function (req, res) {
-  console.log('body',req.body);
   console.log('IN signUp');
   var email = req.body.email;
   var password = req.body.password;
@@ -103,7 +101,7 @@ app.get('/*', function(req, res) {
     return board.save();
   })
   .then(function (savedBoard) {
-    console.log('savedboard-users',savedBoard.users);
+    console.log('savedboard-users',savedBoard.users, 'IN BJARKE FUNCTION');
     // Invoke [request handler](../documentation/sockets.html) for a new socket connection
     // with board id as the Socket.io namespace.
     handleSocket(req.url, savedBoard, io);
@@ -118,7 +116,7 @@ app.get('/*', function(req, res) {
 
 //check the user detials in the database
 app.post('/api/login', function (req, res) {
-  console.log('login',req.body);
+  console.log('LOGIN');
   var email = req.body.email;
   var password = req.body.password;
   Board.userModel.findOne({email: email})
@@ -127,8 +125,8 @@ app.post('/api/login', function (req, res) {
       //SESSION SEND HERE
       req.session.user = user.email;
       console.log('session Last bit', req.session);
-      //SHOULD I REDIRECT TO ANOTHER ROUTE/go back to the client?
-      res.status(200).redirect('/new');
+      //NNED THIS TO STAY ON THE SAME BOARD
+      res.status(200);
     } else {
       console.log('bad pass');
       res.status(401).json({message:'Incorrect Password'});
@@ -143,19 +141,17 @@ app.post('/api/login', function (req, res) {
 //request all the board data from the database for the specific user
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
-  console.log('session-----', req.session.user);
+  console.log('session', req.session.user);
+  console.log('IN USERBOARDS');
   var user = req.session.user;
   Board.boardModel.find({})
   .then(function (boards) {
     var data = boards.map(function (board) {
-      console.log('boardName', boardName);
+      console.log('boardName CURRENT', boardName);
       return board.name;//CURRENTLY NO BOARDS HAVE NAMES!
     });
     console.log('all names if the saved boards',data);
-    // res.status(200).body(data);
-  })
-  .catch(function (err) {
-    res.status(500).json({message:'None Found'});
+    res.status(200).json({message: data});
   });
 });
 
@@ -181,16 +177,13 @@ app.post('/api/save', function (req, res) {
   var user = req.session.user;
   Board.boardModel.findOne({ userEmail: user})
   .then(function (board) {
+    console.log('BOARD', board);
     var query = { boardName : board.boardName };
-    var options = {new: true};
-    return Board.boardSchema.findOneAndUpdate(query, { $set: { boardName: newBoardName }}, options);
+    return Board.boardModel.update(query, { $set: { boardName: newBoardName }});
   })
   .then(function (board) {
-    res.status(200).body('Board Name Saved');
-    //TRIGGER GET ON CLIENT TO UODATE LIST OF SAVED BOARDS
-  })
-  .catch(function (err) {
-    res.status(500).json({message:'Error Saving File'});
+    console.log('RETURNED LAST BOARD', board);
+    res.status(200).json({message: board});
   });
   
 });

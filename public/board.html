@@ -36,12 +36,12 @@
     </div>
 
     <!-- Modal Structure for sign in button-->
-    <div id="modal2" class="modal">
+    <div id="modal2" class="modal" ng-controller='auth as vm'>
       <form class="modal-content">
-        File Name:<input type='text' placeholder='joeBlogs@gmail.com'/>
+        File Name:<input type='text' ng-model="vm.fileName" placeholder='joeBlogs@gmail.com'/>
       </form>
       <div class="modal-footer">
-        <a class="modal-action modal-close waves-effect waves-green btn-flat">Save</a>
+        <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="vm.saveFile();">Save</a>
       </div>
     </div>
 
