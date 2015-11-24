@@ -44,6 +44,7 @@ app.get('/new', function(req, res) {
   });
   board.save()
   .then(function (board) {
+    console.log(id);
     res.redirect('/' + id);
   })
   .catch(function (err) {
