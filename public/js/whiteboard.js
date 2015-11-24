@@ -101,7 +101,6 @@
 
     //NOT SURE THIS FUNCTION WORKING UNTIL FILES BEING SAVED!!
     self.getFiles = function () {
-      console.log('getting files!');
       return $http({
         method: 'GET',
         url: '/api/userBoards'
@@ -109,15 +108,22 @@
       .then(function (response) {
         console.log('response GETTING', response);
         //append these files to the screen!
+        // return response.data.messages;
+        console.log(response.data.messages); //return the array of names of saved files
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
       });
     };
 
+    //function to update the board currently on with a new file name
     self.saveFile = function () {
       console.log('saving FILES!');
-      var data = { fileName: self.fileName };
+      //get the path from the url
+      var boardId = document.location.pathname;
+      //remove the slash from the front of the path
+      boardId = boardId.slice(1);
+      var data = { fileName: self.fileName, boardId: boardId };
       return $http({
         method: 'POST',
         url: '/api/save',

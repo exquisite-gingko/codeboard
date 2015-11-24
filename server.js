@@ -53,6 +53,8 @@ app.get('/new', function(req, res) {
   // Create a new mongoose board model.
   console.log('IN NEW BOARD');
   var id = utils.createId();
+  console.log('ID----------',id);
+  req.session.id = id;
 
   var board = new Board.boardModel({
     id: id,
@@ -63,10 +65,10 @@ app.get('/new', function(req, res) {
   });
   board.save()
   .then(function (board) {
+    console.log('RES ID----->','/' + id);
     res.redirect('/' + id);
   })
   .catch(function (err) {
-    console.log('error in /new',err);
     res.redirect('/');
   });
 });
@@ -102,7 +104,9 @@ app.post('/api/login', function (req, res) {
   var password = req.body.password;
   Board.userModel.findOne({email: email})
   .then(function (user) {
-    if (password === user.password) {
+    if (!user) {
+      res.status(400).json({message:'User does not exist'});
+    } else if (password === user.password) {
       //SESSION SEND HERE
       req.session.user = user.email;
       console.log('session Last bit', req.session);
@@ -127,12 +131,15 @@ app.get('/api/userBoards', function (req, res) {
   var user = req.session.user;
   Board.boardModel.find({})
   .then(function (boards) {
-    var data = boards.map(function (board) {
-      console.log('boardName CURRENT', board.name);
-      return board.name;//CURRENTLY NO BOARDS HAVE NAMES!
+    var data = [];
+    boards.forEach(function (board) {
+      if (board.boardName !== 'null') {
+        console.log('boardName CURRENT', board.boardName);
+        data.push(board.boardName);
+      }
     });
     console.log('all names if the saved boards',data);
-    res.status(200).json({message: data});
+    res.status(200).json({messages: data});
   });
 });
 
@@ -154,13 +161,13 @@ app.get('/api/getOneBoard', function (req, res) {
 //ON SAVE
 app.post('/api/save', function (req, res) {
   //take the name saved with it and get the user details from the session and save the new board
-  var newBoardName = req.body.name;
-  var user = req.session.user;
-  Board.boardModel.findOne({ userEmail: user})
+  // var newBoardName = req.body.name;
+  var boardId = req.body.boardId;
+  Board.boardModel.findOne({ id: boardId})
   .then(function (board) {
-    console.log('BOARD', board);
+    console.log('BOARD to update---------', board);
     var query = { boardName : board.boardName };
-    return Board.boardModel.update(query, { $set: { boardName: newBoardName }});
+    return Board.boardModel.update(query, { $set: { boardName: req.body.fileName }});
   })
   .then(function (board) {
     console.log('RETURNED LAST BOARD', board);
@@ -173,24 +180,25 @@ app.post('/api/save', function (req, res) {
 //LOGOUT
 
 
-//**Wildcard route & board id handler.**
+
+// **Wildcard route & board id handler.**
 app.get('/*', function(req, res) {
   var id = req.url.slice(1);
   Board.boardModel.findOne({id: id})
   .then(function (board) {
-    if (!board) {
-      return res.redirect('/new');
-    }
     board.users++;
-    return board.save();
+    return  board.save();
   })
   .then(function (savedBoard) {
-    console.log('savedboard-users',savedBoard.users, 'IN BJARKE FUNCTION');
+    console.log(savedBoard.users);
     // Invoke [request handler](../documentation/sockets.html) for a new socket connection
     // with board id as the Socket.io namespace.
     handleSocket(req.url, savedBoard, io);
     // Send back whiteboard html template.
     res.sendFile(__dirname + '/public/board.html');
+  })
+  .catch(function (err) {
+    res.redirect('/');
   });
 });
 
