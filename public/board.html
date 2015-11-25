@@ -31,14 +31,15 @@
         Password:<input type='password' ng-model="vm.password" placeholder='Super secret password'/>
       </form>
       <div class="modal-footer">
-        <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="vm.login();">Submit</a>
+        <a class="modal-action waves-effect waves-green btn-flat" ng-click="vm.login();">Submit</a>
+        <!-- <p >{{errorMessage}}</p> -->
       </div>
     </div>
 
     <!-- Modal Structure for sign in button-->
     <div id="modal2" class="modal" ng-controller='auth as vm'>
       <form class="modal-content">
-        File Name:<input type='text' ng-model="vm.fileName" placeholder='joeBlogs@gmail.com'/>
+        File Name:<input type='text' ng-model="vm.fileName" placeholder='codeBoard name'/>
       </form>
       <div class="modal-footer">
         <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="vm.saveFile();">Save</a>
@@ -67,12 +68,12 @@
         <a href="#" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down" ng-controller='auth as vm'>
-          
+          <!-- new board link -->
           <li><a href="/new"><i class="material-icons">note_add</i></a></li>
+          <!-- saved files drop down -->
           <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o" ng-click="vm.getFiles();"></i></a></li>
-          <!-- Modal Trigger -->
+          <!-- Modal Trigger for save file-->
           <li><a class="modal-trigger" href="#modal2"><i class="fa fa-floppy-o" ></i></a></li>
-          <li><a href="#"><i class="fa fa-power-off"></i></a></li>
           <li><a class="dropdown-button" href="#" data-activates="dropdown2">Login/Out</i></a></li>
                 
         </ul>

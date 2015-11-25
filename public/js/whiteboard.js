@@ -78,6 +78,7 @@
       })
       .catch(function (err) {
         console.log('Error Saving Credentials');
+        //SHOW AN ERROR TO THE USER...
       });
     };
 
@@ -93,13 +94,15 @@
         console.log('response login', response);
         // return response;
         self.getFiles();
+        document.location = '/new';
       })
       .catch(function (err) {
-        console.log('Error Matching Password');
+        console.log('Error ------', err.data.message);
+        self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE!!
       });
     };
 
-    //NOT SURE THIS FUNCTION WORKING UNTIL FILES BEING SAVED!!
+    
     self.getFiles = function () {
       return $http({
         method: 'GET',
@@ -138,6 +141,23 @@
       .catch(function (err) {
         console.log('Error Saving Files');
       });
+    };
+
+    //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
+    self.getOne = function () {
+      //click on a certain one
+      //get the name that clicked on
+      return $http({
+        method: 'GET',
+        url: '/api/save'
+      })
+      .then(function (response) {
+        document.location = '/' + self.boardId;
+      })
+      .catch(function (err) {
+        res.status(500).json({message:'Board Not Found'});
+      });
+
     };
 
   }

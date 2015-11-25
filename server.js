@@ -145,15 +145,12 @@ app.get('/api/userBoards', function (req, res) {
 //ON CLICK OF ONE OF THESE BOARDS DISPALYED ON THE SCREEN
 //go to the database and get the id of the board and redirect to /+id
 app.get('/api/getOneBoard', function (req, res) {
-  var user = req.session.user;
-  Board.boardModel.findOne({user:user})
+  //get the board name clicked on 
+  Board.boardModel.findOne({boardName: boardName})
   .then(function (user) {
-    var boardId = user.id;
-    res.redirect('/'+ boardId);
-  })
-  .catch(function (err) {
-    res.status(500).json({message:'Board Not Found'});
+    res.status(200).json({ messages: user.id });
   });
+
 });
   
 
@@ -177,7 +174,6 @@ app.post('/api/save', function (req, res) {
 
 
 //LOGOUT
-
 
 
 // **Wildcard route & board id handler.**
