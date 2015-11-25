@@ -46,13 +46,11 @@
     </div>
 
     <!-- details for drop down where to save files -->
+    <div ng-controller='auth as vm'>
     <ul id="dropdown1" class="dropdown-content">
-      <li><a href="#!">one</a></li>
-      <li class="divider"></li>
-      <li><a href="#!">two</a></li>
-      <li class="divider"></li>
-      <li><a href="#!">three</a></li>
+      <li ng-repeat="canvas in vm.canvases"><a href="#!">{{canvas}}</a></li>
     </ul>
+    </div>
 
     <!-- details for drop down authentication -->
     <ul id="dropdown2" class="dropdown-content">
@@ -68,15 +66,14 @@
       <div class="nav-wrapper">
         <a href="#" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down" ng-controller='switchBoardsController as vm'>
-                
-                <li><a href="/new"></a></li>
-                <li><a href="/new"><i class="material-icons">note_add</i></a></li>
-                <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o"></i></a></li>
-                <!-- Modal Trigger -->
-                <li><a class="modal-trigger" href="#modal2"><i class="fa fa-floppy-o"></i></a></li>
-                <li><a href="#"><i class="fa fa-power-off"></i></a></li>
-                <li><a class="dropdown-button" href="#" data-activates="dropdown2">Login/Out</i></a></li>
+        <ul class="right hide-on-med-and-down" ng-controller='auth as vm'>
+          
+          <li><a href="/new"><i class="material-icons">note_add</i></a></li>
+          <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o" ng-click="vm.getFiles();"></i></a></li>
+          <!-- Modal Trigger -->
+          <li><a class="modal-trigger" href="#modal2"><i class="fa fa-floppy-o" ></i></a></li>
+          <li><a href="#"><i class="fa fa-power-off"></i></a></li>
+          <li><a class="dropdown-button" href="#" data-activates="dropdown2">Login/Out</i></a></li>
                 
         </ul>
         <ul class="side-nav" id="mobile-demo">

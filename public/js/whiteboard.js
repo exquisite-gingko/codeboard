@@ -106,16 +106,17 @@
         url: '/api/userBoards'
       })
       .then(function (response) {
-        console.log('response GETTING', response);
         //append these files to the screen!
         // return response.data.messages;
-        console.log(response.data.messages); //return the array of names of saved files
+        self.canvases.push(response.data.messages[0]);
+        console.log('------------->',self.canvases);
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
       });
     };
 
+    self.canvases = ['anna', 'rohan', 'pooh'];
     //function to update the board currently on with a new file name
     self.saveFile = function () {
       console.log('saving FILES!');
