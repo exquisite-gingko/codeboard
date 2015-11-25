@@ -45,10 +45,11 @@
       </div>
     </div>
 
-    <!-- details for drop down where to save files -->
-    <ul id="dropdown1" class="dropdown-content">
-      <li><a href="#!">one</a></li>
+    <!-- details for drop down where to save files NOT GETTING THE NEW CALLS TO THE FUNCTION?? -->
+    <ul id="dropdown1" class="dropdown-content" ng-controller="auth as vm">
+      <li ng-repeat="canvas in vm.canvases"><a href="#!">{{canvas}}</a></li>
       <li class="divider"></li>
+      <!-- stuff that was here before not necessary really -->
       <li><a href="#!">two</a></li>
       <li class="divider"></li>
       <li><a href="#!">three</a></li>

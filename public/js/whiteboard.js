@@ -103,8 +103,11 @@
       });
     };
 
-
+    //THis function is currently being called when you hit the button so the first time you hit the button no data 
+    //will be returned because the event to go get the data will not have returned yet
+    //this is only for testing purposes though so remember to hit the button twice to check stuff here
     self.getFiles = function () {
+      console.log('get files------->', self.canvases);
       return $http({
         method: 'GET',
         url: '/api/userBoards'
@@ -114,11 +117,16 @@
         //append these files to the screen!
         // return response.data.messages;
         console.log(response.data.messages); //return the array of names of saved files
+        //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
+        self.canvases = response.data.messages;
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
       });
     };
+    //NB HARD CODED LINE
+    //this hard coded line gets added to the html
+    self.canvases = ['sea','sand','surf'];
 
     //function to update the board currently on with a new file name
     self.saveFile = function () {
