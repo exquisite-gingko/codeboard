@@ -65,7 +65,6 @@ app.get('/new', function(req, res) {
   });
   board.save()
   .then(function (board) {
-    console.log('RES ID----->','/' + id);
     res.redirect('/' + id);
   })
   .catch(function (err) {

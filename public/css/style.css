@@ -162,15 +162,17 @@ div.buttons {
   border-radius: 100px;
 }
 */
+
 .join {
   width: 15%;
 }
 
-.z-depth-0 {
-  -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
-  -moz-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0);
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0);
+.sample-show-hide {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
 }
 
 
-
+.sample-show-hide.ng-hide {
+  opacity:0;
+}
