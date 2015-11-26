@@ -18,6 +18,7 @@
           <li><a href="/new"><i class="material-icons">add</i></a></li>
           <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
           <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
+          <li ng-controller="toolbar as vm" ng-click="vm.keyboardToggle()"><a href="#"><i class="material-icons">keyboard</i></a></li>
           <li><a href="sass.html"><i class="material-icons">settings</i></a></li>
           <!-- <li><a href="sass.html"><i class="material-icons">videocam_off</i></a></li> -->
           <!-- <li><a href="sass.html"><i class="material-icons">mic_off</i></a></li> -->
@@ -62,7 +63,6 @@
         <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
         <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
         <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
-        <li ng-click="vm.keyboardToggle()"><a class="btn-floating red darken-3"><i class="fa fa-keyboard-o"></i></a></li>
       </ul>
       
     </div>
