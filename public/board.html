@@ -31,8 +31,7 @@
         Password:<input type='password' ng-model="vm.password" placeholder='Super secret password'/>
       </form>
       <div class="modal-footer">
-        <a class="modal-action waves-effect waves-green btn-flat" ng-click="vm.login();">Submit</a>
-        <!-- <p >{{errorMessage}}</p> -->
+        <a class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="vm.login();">Submit</a>
       </div>
     </div>
 
@@ -46,20 +45,24 @@
       </div>
     </div>
 
-    <!-- details for drop down where to save files -->
-    <div ng-controller='auth as vm'>
-    <ul id="dropdown1" class="dropdown-content">
+    <!-- details for drop down where to save files NOT GETTING THE NEW CALLS TO THE FUNCTION?? -->
+    <ul id="dropdown1" class="dropdown-content" ng-controller="auth as vm">
       <li ng-repeat="canvas in vm.canvases"><a href="#!">{{canvas}}</a></li>
+      <li class="divider"></li>
+      <!-- stuff that was here before not necessary reallynodemon
+       -->
+      <li><a href="#!">two</a></li>
+      <li class="divider"></li>
+      <li><a href="#!">three</a></li>
     </ul>
-    </div>
 
     <!-- details for drop down authentication -->
-    <ul id="dropdown2" class="dropdown-content">
+    <ul id="dropdown2" class="dropdown-content" ng-controller="auth as vm">
       <li><a class="modal-trigger" href="#modal3">Login</i></a></li>
       <li class="divider"></li>
       <li><a class="modal-trigger" href="#modal1">Sign Up</i></a></li>
       <li class="divider"></li>
-      <li><a href="#!">Log Out</a></li>
+      <li><a href="#" ng-click="vm.logout();">Log Out</a></li>
     </ul>
     
     <!-- main nav icons -->
@@ -67,15 +70,23 @@
       <div class="nav-wrapper">
         <a href="#" class="brand-logo">CodeBoard</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down" ng-controller='auth as vm'>
-          <!-- new board link -->
-          <li><a href="/new"><i class="material-icons">note_add</i></a></li>
-          <!-- saved files drop down -->
-          <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o" ng-click="vm.getFiles();"></i></a></li>
-          <!-- Modal Trigger for save file-->
-          <li><a class="modal-trigger" href="#modal2"><i class="fa fa-floppy-o" ></i></a></li>
-          <li><a class="dropdown-button" href="#" data-activates="dropdown2">Login/Out</i></a></li>
+        <ul class="right hide-on-med-and-down" ng-controller='switchBoardsController as vm'>
                 
+                <!-- toggle the code editor on/off -->
+                <li ng-controller="toolbar as vm" ng-click="vm.keyboardToggle()"><a href="#"><i class="material-icons">keyboard</i></a></li>
+                <!-- button to get a new canvas -->
+                <li><a href="/new"><i class="material-icons">note_add</i></a></li>
+                <!-- dropdown of all the files that are available to the user -->
+                <li><a class="dropdown-button" href="#" data-activates="dropdown1"><i class="fa fa-folder-open-o"></i></a></li>
+                <!-- Modal Trigger for the pop out to save a canvas and make it TO BE DISABLED UNTIL SIGNED IN-->
+                <li><a class="modal-trigger" href="#modal2"><i class="fa fa-floppy-o"></i></a></li>
+                <!-- dropDown to login/logout/signup DISABLE LOGOUT WHEN LOGED OUT AND LOGIN WHEN LOGGEDIN-->
+                <li><a class="dropdown-button" href="#" data-activates="dropdown2">Login/Out</i></a></li>
+                
+         <!--  <li><a href="sass.html"><i class="material-icons">mic</i></a></li>
+          <li><a href="sass.html"><i class="material-icons">videocam</i></a></li>
+          <li><a href="sass.html"><i class="material-icons">settings</i></a></li> -->
+     
         </ul>
         <ul class="side-nav" id="mobile-demo">
           <li><a href="/new">New Board</a></li>
@@ -84,6 +95,9 @@
       </div>
     </nav>
 
+    <div class="sample-show-hide" id="firepad" ng-controller="toolbar as vm" ng-show="vm.keyboardState()" ng-animate="'box'" style="border:1px solid #dddddd;background:orange;width:100%;height:650px">
+        
+    </div>
 
     <div ng-controller='switchBoardsController as vm'>
         <form ng-submit='vm.switchBoards()'>
@@ -99,40 +113,61 @@
       <!-- render this in ng-view probably -->
       <div class='board-frame'>
 
-        <canvas id='whiteboard' ng-controller='canvas'>
-        </canvas>
+        <canvas id="whiteboard" ng-controller="canvas"></canvas>
 
       </div>
     </div>
 
     <div class="fixed-action-btn vertical toolbar" ng-controller='toolbar as vm' style="bottom: 20px; right: 24px;">
-       <a class="btn-floating btn-medium red">
-         <i class="fa fa-arrow-up"></i>
-       </a>
-       <ul>
-         <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
-         <li ng-click="vm.changePen('black')"><a class="btn-floating black"><i class="fa fa-pencil"></i></a></li>
-         <li ng-click="vm.changePen('orange')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
-         <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
-         <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
-       </ul>
-     </div>
 
+
+      <a class="btn-floating btn-medium red"><i class="fa fa-arrow-up"></i></a>
+      <ul>
+        <li ng-click="vm.changePen('eraser')"><a class="btn-floating grey lighten-2"><i class="fa fa-eraser" style="color: #555"></i></a></li>
+        <li ng-click="vm.changePen('#ff6f00')"><a class="btn-floating amber darken-2"><i class="fa fa-pencil"></i></a></li>
+        <li ng-click="vm.changePen('navy')"><a class="btn-floating indigo darken-3"><i class="fa fa-pencil"></i></a></li>
+        <li ng-click="vm.changePen('green')"><a class="btn-floating green darken-3"><i class="fa fa-pencil"></i></a></li>
+      </ul>
+      
     </div>
-    </div>
+
+
   </body>
 
-
 <script src="http://simplewebrtc.com/latest.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
 <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
 <script src="lib/jquery.event.drag-2.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
 <!-- scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.2/angular-animate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
-<script src="js/app.js"></script>
-<script src='js/whiteboard.js'></script>
-<script src="js/initialize.js"></script>
+<script src="app/app.js"></script>
+<script src='app/whiteboard.js'></script>
+<script src="app/initialize.js"></script>
+
+<!-- Firebase -->
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+
+<!-- CodeMirror -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.2.0/codemirror.css" />
+
+<!-- Firepad -->
+<link rel="stylesheet" href="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.css" />
+<script src="https://cdn.firebase.com/libs/firepad/1.2.0/firepad.min.js"></script>
+
+<script>
+  var firepadRef = new Firebase('https://burning-inferno-4771.firebaseIO.com/firepads/' + window.location.pathname.slice(1));
+  var codeMirror = CodeMirror(document.getElementById('firepad'), {
+    lineNumbers: true,
+    mode: 'javascript'
+  });
+  var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror, {
+    defaultText: 'JavaScript Editing with Firepad!' 
+  });
+</script>
+
 </html>

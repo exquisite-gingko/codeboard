@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  angular.module('whiteboard', ['ui.router'])
+  angular.module('whiteboard', ['ngAnimate','ui.router'])
     .config(function($stateProvider) {
       $stateProvider
         .state('eraser', {
@@ -21,9 +21,32 @@
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
     .controller('auth', auth)
+    .controller('popOut', function($scope) {
+
+    })
+    .factory('keyboard', keyboard)
     // Set changePen method.
     // Note that an eraser is simply a white pen, not actually erasing [x,y] tuples from the database. 
     .service('tools', tools);
+
+  var keyDisplay = false;
+
+  function keyboard () {
+
+    var toggle = function () {
+      keyDisplay = !keyDisplay;
+      console.log(keyDisplay);
+    };
+
+    var state = function () {
+      return keyDisplay;
+    };
+
+    return {
+      toggle: toggle,
+      state: state
+    };
+  }
 
   function tools ($rootScope) {
     var changePen = function(option) {
@@ -35,6 +58,7 @@
       } else {
         console.log("The user is using the pen.");
         $rootScope.app.pen.lineWidth = 5;
+        console.log($rootScope.app.pen.strokeStyle);
         $rootScope.app.pen.strokeStyle = option;
         $rootScope.app.pen.lineWidth = 2;
       }
@@ -44,12 +68,19 @@
     };
   }
 
-  function toolBar ($element, tools) {
+  function toolBar ($element, tools, keyboard) {
     var self = this;
     self.changePen = function (option) {
       tools.changePen(option);
       console.log("The user chose the tool", $element);
       $('input').not($('#' + option)).attr('checked', false);
+    };
+    self.boardOut = false;
+    self.keyboardToggle = function () {
+      keyboard.toggle();
+    };
+    self.keyboardState = function() {
+      return keyboard.state();
     };
   }
 
@@ -78,7 +109,6 @@
       })
       .catch(function (err) {
         console.log('Error Saving Credentials');
-        //SHOW AN ERROR TO THE USER...
       });
     };
 
@@ -97,29 +127,38 @@
         document.location = '/new';
       })
       .catch(function (err) {
+        console.log('Error Matching Password');
+        //WANT TO LOG THIS ERROR
         console.log('Error ------', err.data.message);
         self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE!!
       });
     };
 
-    
+    //THis function is currently being called when you hit the button so the first time you hit the button no data 
+    //will be returned because the event to go get the data will not have returned yet
+    //this is only for testing purposes though so remember to hit the button twice to check stuff here
     self.getFiles = function () {
+      console.log('get files------->', self.canvases);
       return $http({
         method: 'GET',
         url: '/api/userBoards'
       })
       .then(function (response) {
+        console.log('response GETTING', response);
         //append these files to the screen!
         // return response.data.messages;
-        self.canvases.push(response.data.messages[0]);
-        console.log('------------->',self.canvases);
+        console.log(response.data.messages); //return the array of names of saved files
+        //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
+        self.canvases = response.data.messages;
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
       });
     };
+    //NB HARD CODED LINE
+    //this hard coded line gets added to the html
+    self.canvases = ['sea','sand','surf'];
 
-    self.canvases = ['anna', 'rohan', 'pooh'];
     //function to update the board currently on with a new file name
     self.saveFile = function () {
       console.log('saving FILES!');
@@ -155,8 +194,25 @@
         document.location = '/' + self.boardId;
       })
       .catch(function (err) {
-        res.status(500).json({message:'Board Not Found'});
+        console.log('Error getting named file');
       });
+
+    };
+
+    self.logout = function () {
+
+      return $http({
+        method: 'DELETE',
+        url: '/api/logout'
+      })
+      .then(function (response) {
+        console.log('logged out');
+        //now want to disable the logout button
+      })
+      .catch(function (err) {
+        console.log('Error loging out');
+      });
+
 
     };
 
