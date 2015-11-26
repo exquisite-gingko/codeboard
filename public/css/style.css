@@ -165,17 +165,7 @@ div.buttons {
   -webkit-transition:all linear 0.5s;
   transition:all linear 0.5s;
 }
-<<<<<<< HEAD
 
-
-=======
-*/
-.sample-show-hide {
-  -webkit-transition:all linear 0.5s;
-  transition:all linear 0.5s;
-}
-
->>>>>>> 8b3446b6174b01d1946931036d07aaa164ef721e
 .sample-show-hide.ng-hide {
   opacity:0;
 }

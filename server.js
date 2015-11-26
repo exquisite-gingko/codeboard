@@ -19,12 +19,14 @@ var session = require('express-session');
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+
+
 app.use(session({
   secret: 'nofflePenguin',
   resave: false,
-  // saveUninitialized: true,
-  cookie: { maxAge: 679000000 }
+  cookie: { maxAge: 67967000000 }
 }));
+
 
 
 // **Static folder for serving application assets**
@@ -32,6 +34,11 @@ app.use('/', express.static(__dirname + '/public'));
 
 // **Static folder for serving documentation**
 app.use('/documentation', express.static(__dirname + '/docs'));
+
+app.use(function (req, res, next) {
+  console.log('LOGGING MIDDLEWARE',req.session);
+  next();
+});
 
 // ## Routes
 var id = utils.createId();
@@ -85,7 +92,6 @@ app.post('/api/signUp', function (req, res) {
   user.save()
   .then(function (user) {
     //send the response to the /new route
-    console.log('sending to /new');
     req.session.user = user.email;
     res.redirect('/new');
   })
@@ -176,6 +182,15 @@ app.post('/api/save', function (req, res) {
 
 
 //LOGOUT
+app.delete('/api/logout', function (req, res) {
+
+  console.log('SESSION DETAILs',req.session);
+  // delete req.session;
+  req.session.destroy(function() {
+    res.status(200).json({message: "Session deleted"});
+  });
+
+});
 
 
 

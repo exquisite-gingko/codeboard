@@ -17,6 +17,14 @@ $(function() {
 
   // Add the button collapse init for materialize
   $(".button-collapse").sideNav();
+  $(".dropdown-button").dropdown();
+
+  $('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+  });
+
+   $('.modal-trigger').leanModal();
+   
 
   var lastPt = null;
   // **Mouse Events**
