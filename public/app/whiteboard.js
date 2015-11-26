@@ -182,7 +182,7 @@
       });
     };
 
-      //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
+    //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
     self.getOne = function () {
       //click on a certain one
       //get the name that clicked on
@@ -207,6 +207,7 @@
       })
       .then(function (response) {
         console.log('logged out');
+        //now want to disable the logout button
       })
       .catch(function (err) {
         console.log('Error loging out');
