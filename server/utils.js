@@ -1,6 +1,7 @@
 var randomId = require('random-id');
 var Board = require('../db/board');
-var bcrypt = require('bcrypt');
+var Promise = require('bluebird');
+var bcrypt = Promise.promisifyAll(require('bcrypt'));
 
 module.exports = {
   activeBoards: {},
@@ -18,20 +19,25 @@ module.exports = {
     }
   },
   encryptPassword: function(password) {
-    bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(password, salt, function(err, hash) {
-            // Store hash in your password DB.
-            console.log("hashed password", hash);
-            return hash;
-        });
+    return bcrypt.genSaltAsync(10)
+    .then(function(salt) {
+      return bcrypt.hashAsync(password, salt);
+    })
+    .then(function(hash) {
+      console.log('hash', hash);
+      return hash;
     });
   },
   decrypt: function(dbPassword, typedPass) {
-    bcrypt.compare(typedPass, hash, function(err, res) {
-      // res == true
-      console.log('PASSWORD TRUE/FALSE');
-
+    console.log('PASSWORDS',dbPassword, typedPass);
+    return bcrypt.compareAsync(typedPass, dbPassword)
+    .then(function(res) {
+      console.log('PASSWORD TRUE/FALSE', res);
+      return res;
     });
   }
 };
+
+// $2a$10$2NyVrqQbyjuXbXkSqfvZ3ulVxtKgkQnOEpTJQjsXkKJdOHcEdNYs6
+// $2a$10$2NyVrqQbyjuXbXkSqfvZ3ulVxtKgkQnOEpTJQjsXkKJdOHcEdNYs6
 
