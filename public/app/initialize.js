@@ -39,8 +39,11 @@ $(function() {
       x: e.offsetX,
       y: e.offsetY
     };
+<<<<<<< fa8f58ea8180dacd5569768e5738c10a890f7c0d
     console.log('mousedown');
     console.log(App.startDrag);
+=======
+>>>>>>> implementing rectangles in new code
 
     // Allow user drawing only if other users are not drawing.
     if (!App.isAnotherUserActive) {     
@@ -84,7 +87,10 @@ $(function() {
       if (App.drawType === 'free') {
         end();
       } else if (App.drawType === 'rectangle') {
+<<<<<<< fa8f58ea8180dacd5569768e5738c10a890f7c0d
         console.log('after if');
+=======
+>>>>>>> implementing rectangles in new code
         drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
       }
     } else {
