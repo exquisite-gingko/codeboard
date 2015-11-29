@@ -93,6 +93,12 @@
       </div>
     </nav>
 
+    <!-- video component: start -->
+    <video id="localVideo"></video>
+    <div id="remoteVideos"></div>
+    <!-- video component: end -->
+
+    <!-- firepad: start -->
     <div
       class="sample-show-hide" id="firepad"
       ng-controller="toolbar as vm"
@@ -100,6 +106,7 @@
       ng-animate="'box'"
       style="border:1px solid #dddddd;background:orange;width:100%;height:650px">
     </div>
+    <!-- firepad: end -->
 
     <!-- nav start: to existing board -->
     <div ng-controller="switchBoardsController as vm">
