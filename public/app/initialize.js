@@ -31,14 +31,24 @@ $(function() {
 
   // On mousedown detection, initialize drawing properties based on mouse coordinates.
   App.canvas.on('mousedown', function(e) {
+    App.startDrag = {
+      x: e.offsetX,
+      y: e.offsetY
+    };
+    App.previousDrag = {
+      x: e.offsetX,
+      y: e.offsetY
+    };
 
     // Allow user drawing only if other users are not drawing.
-    if (!App.isAnotherUserActive) {
-     
+    if (!App.isAnotherUserActive) {     
       console.log("User has started to draw.");
-      start(e.offsetX, e.offsetY);
-
-
+      console.log(App.drawType);
+      if (App.drawType === 'free') {
+        start(e.offsetX, e.offsetY);
+      } else if (App.drawType === 'rectangle') {
+        drawRectangle.start(e.offsetX, e.offsetY);
+      }
     } else {
       console.log('Another user is drawing - please wait.');
     }
@@ -50,8 +60,11 @@ $(function() {
     // Allow user drawing only if other users are not drawing.
     if (!App.isAnotherUserActive) {
       if (App.mouse.click) {
-
-        drag(e.offsetX, e.offsetY);
+        if (App.drawType === 'free') {
+          drag(e.offsetX, e.offsetY);
+        } else if (App.drawType === 'rectangle') {
+          drawRectangle.drag(e.offsetX, e.offsetY);
+        }
       }
     } else {
       console.log('Another user is drawing - please wait.');
@@ -61,9 +74,11 @@ $(function() {
   // On mouse dragend detection, tell socket that we have finished drawing.
   App.canvas.on('dragend', function(e) {
     if (!App.isAnotherUserActive) {
-
-      end();
-
+      if (App.drawType === 'free') {
+        end();
+      } else if (App.drawType === 'rectangle') {
+        drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
+      }
     } else {
       console.log('Another user is drawing - please wait.');
     }
@@ -114,6 +129,7 @@ $(function() {
 
     // Add the first mouse coordinates to the ```stroke``` array for storage.
     App.stroke.push([App.mouse.x, App.mouse.Y]);
+    App.socket.emit('drag', [App.mouse.x, App.mouse.y]);
   }
 
   function drag (xCoord, yCoord) {
@@ -141,9 +157,54 @@ $(function() {
     console.log("Drawing is finished and its data is being pushed to the server", [App.stroke, App.pen]);
 
     // Empty the App.stroke array.
+    var finishedStroke = {
+      pen: App.pen,
+      stroke: App.stroke
+    };
+    App.board.strokes.push(finishedStroke);
     App.stroke = [];
 
     // Tell socket that we've finished sending data.
     App.socket.emit('end', null);
-  }
+  };
+
+  var drawRectangle = {
+    start: function (x, y) {
+      App.mouse.click = true;
+      App.mouse.x = x;
+      App.mouse.y = y;
+
+      // ```App.initializeMouseDown``` is from [app.js](../docs/app.html) where it initializes the pen and canvas before rendeirng.
+      App.initializeMouseDown(App.pen, App.mouse.x, App.mouse.y);
+
+      // Emit the pen object through socket. 
+      App.socket.emit('start', App.pen);
+
+      // Add the first mouse coordinates to the ```stroke``` array for storage.
+      App.stroke.push([App.mouse.x, App.mouse.Y]);
+    },
+    drag: function (x, y) {
+      // App.socket.emit('removeLast');
+      App.socket.emit('start', App.pen);
+      App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('drag', [App.startDrag.x, y]);
+      App.socket.emit('drag', [x, y]);
+      App.socket.emit('drag', [x, App.startDrag.y]);
+      App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('end', null);
+      console.log(App.board);
+    },
+    end: function (x, y) {
+      App.socket.emit('removeLast');
+      App.socket.emit('start', App.pen);
+      App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('drag', [App.startDrag.x, y]);
+      App.socket.emit('drag', [x, y]);
+      App.socket.emit('drag', [x, App.startDrag.y]);
+      App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('end', null);
+      console.log(App.board);
+    }
+  };
+
 });
