@@ -8,6 +8,7 @@ module.exports = {
     this.activeBoards[id] = true;
     return id;
   },
+  //not being used currently
   removeId: function (id) {
     if (activeBoards[id]) {
       delete activeBoards[id];
@@ -16,3 +17,4 @@ module.exports = {
     }
   }
 };
+

@@ -20,6 +20,7 @@
     // Set toolbar for colour palette and eraser. 
     .controller('toolbar', toolBar)
     .controller('switchBoardsController', switchBoardsCtrl)
+    .controller('auth', auth)
     .controller('popOut', function($scope) {
 
     })
@@ -33,13 +34,13 @@
   function keyboard () {
 
     var toggle = function () {
-      keyDisplay = !keyDisplay
+      keyDisplay = !keyDisplay;
       console.log(keyDisplay);
-    }
+    };
 
     var state = function () {
       return keyDisplay;
-    }
+    };
 
     return {
       toggle: toggle,
@@ -76,12 +77,11 @@
     };
     self.boardOut = false;
     self.keyboardToggle = function () {
-      console.log(keyboard.toggle);
       keyboard.toggle();
-    }
+    };
     self.keyboardState = function() {
       return keyboard.state();
-    }
+    };
   }
 
   function switchBoardsCtrl ($http, $location) {
@@ -92,5 +92,132 @@
       document.location = '/' + self.boardId;
     };
   }
+
+  function auth ($http) {
+    var self = this;
+
+    self.signUp = function() {
+      var data = { email : self.email, password: self.password };
+      return $http({
+        method: 'POST',
+        url: '/api/signUp',
+        data: data
+        })
+      .then(function (response) {
+        console.log('response', response);
+        return response;
+      })
+      .catch(function (err) {
+        console.log('Error Saving Credentials');
+      });
+    };
+
+    self.login = function() {
+      console.log('in login FUNCTION');
+      var data = { email : self.email, password: self.password };
+      return $http({
+        method: 'POST',
+        url: '/api/login',
+        data: data
+        })
+      .then(function (response) {
+        console.log('response login', response);
+        // return response;
+        self.getFiles();
+        document.location = '/new';
+      })
+      .catch(function (err) {
+        console.log('Error Matching Password');
+        //WANT TO LOG THIS ERROR
+        console.log('Error ------', err.data.message);
+        self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE!!
+      });
+    };
+
+    //THis function is currently being called when you hit the button so the first time you hit the button no data 
+    //will be returned because the event to go get the data will not have returned yet
+    //this is only for testing purposes though so remember to hit the button twice to check stuff here
+    self.getFiles = function () {
+      console.log('get files------->', self.canvases);
+      return $http({
+        method: 'GET',
+        url: '/api/userBoards'
+      })
+      .then(function (response) {
+        console.log('response GETTING', response);
+        //append these files to the screen!
+        // return response.data.messages;
+        console.log(response.data.messages); //return the array of names of saved files
+        //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
+        self.canvases = response.data.messages;
+      })
+      .catch(function (err) {
+        console.log('Error Finding Any Saved Boards');
+      });
+    };
+    //NB HARD CODED LINE
+    //this hard coded line gets added to the html
+    self.canvases = ['sea','sand','surf'];
+
+    //function to update the board currently on with a new file name
+    self.saveFile = function () {
+      console.log('saving FILES!');
+      //get the path from the url
+      var boardId = document.location.pathname;
+      //remove the slash from the front of the path
+      boardId = boardId.slice(1);
+      var data = { fileName: self.fileName, boardId: boardId };
+      return $http({
+        method: 'POST',
+        url: '/api/save',
+        data: data
+      })
+      .then(function (response) {
+        console.log('response SAVE', response);
+        //trigger get function to update the files available to the user
+        self.getFiles();
+      })
+      .catch(function (err) {
+        console.log('Error Saving Files');
+      });
+    };
+
+    //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
+    self.getOne = function () {
+      //click on a certain one
+      //get the name that clicked on
+      return $http({
+        method: 'GET',
+        url: '/api/save'
+      })
+      .then(function (response) {
+        document.location = '/' + self.boardId;
+      })
+      .catch(function (err) {
+        console.log('Error getting named file');
+      });
+
+    };
+
+    self.logout = function () {
+
+      return $http({
+        method: 'DELETE',
+        url: '/api/logout'
+      })
+      .then(function (response) {
+        console.log('logged out');
+        //now want to disable the logout button
+      })
+      .catch(function (err) {
+        console.log('Error loging out');
+      });
+
+
+    };
+
+  }
+
+
 
 })();

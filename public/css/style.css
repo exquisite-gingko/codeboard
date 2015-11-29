@@ -156,12 +156,11 @@ div.buttons {
   text-decoration:none;
   font-family: 'Montserrat', sans-serif;
 }
-/*
-.borderCircle {
-  border: 1px solid white;
-  border-radius: 100px;
+
+.join {
+  width: 15%;
 }
-*/
+
 .sample-show-hide {
   -webkit-transition:all linear 0.5s;
   transition:all linear 0.5s;
