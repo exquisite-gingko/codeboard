@@ -55,8 +55,16 @@
         $('html,body').css('cursor','crosshair');
         $rootScope.app.pen.lineWidth = 50;
         $rootScope.app.pen.strokeStyle = '#fff';
+      } else if (option === 'rectangle') {
+        console.log('drawing rectangle');
+        $rootScope.app.drawStyle = 'rectangle';
+        $rootScope.app.pen.lineWidth = 5;
+        console.log($rootScope.app.pen.strokeStyle);
+        $rootScope.app.pen.strokeStyle = '#000000';
+        $rootScope.app.pen.lineWidth = 2;
       } else {
         console.log("The user is using the pen.");
+        $rootScope.app.drawStyle = 'free';
         $rootScope.app.pen.lineWidth = 5;
         console.log($rootScope.app.pen.strokeStyle);
         $rootScope.app.pen.strokeStyle = option;

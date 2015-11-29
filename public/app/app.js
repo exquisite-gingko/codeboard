@@ -2,7 +2,9 @@
 
 // ##### [Back to Table of Contents](./tableofcontents.html)
 
-var App = {};
+var App = {
+  
+};
 
 App.init = function() {
   // Connect to sockets.io with unique ioRoom ID - either a new whiteboard or used and saved previously by [sockets.js](../docs/sockets.html)
