@@ -51,7 +51,6 @@ var connect = function(boardUrl, board, io) {
     socket.on('end', function() {
       var finishedStroke = socket.stroke;
 
-
       //Update the board with the new stroke.
       Board.boardModel.update({id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
         if(err){ console.log(err); }
@@ -65,6 +64,14 @@ var connect = function(boardUrl, board, io) {
 
       //Delete the stroke object to make room for the next stroke.
       delete socket.stroke;
+    });
+
+    socket.on('removeLast', function () {
+      Board.boardModel.update({id: id}, )
+    });
+
+    socket.on('endRectangle', function () {
+
     });
 
     
