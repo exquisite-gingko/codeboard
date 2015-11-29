@@ -2,7 +2,6 @@
 
 // ##### [Back to Table of Contents](./tableofcontents.html)
 
-
 var App = {};
 
 App.init = function() {
@@ -10,38 +9,39 @@ App.init = function() {
   var ioRoom = window.location.href;
   App.socket = io(ioRoom);
 
-
-  //**Video Chat Functionality** 
+  //**Video Chat Functionality**
 
   // Create a video chat Object.
-  // var webrtc = new SimpleWebRTC({
-  //   // **localVideoEl**: the ID/element DOM element that will hold the current user's video
-  //   localVideoEl: 'localVideo',
-  //   // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
-  //   remoteVideosEl: 'remoteVideos',
-  //   // **autoRequestMedia**: immediately ask for camera access
-  //   autoRequestMedia: true
-  // });
+  var webrtc = new SimpleWebRTC({
+    // **localVideoEl**: the ID/element DOM element that will hold the current user's video
+    localVideoEl: 'localVideo',
 
-  // // The room name is the same as our socket connection.
-  // webrtc.on('readyToCall', function() {
-  //   webrtc.joinRoom(ioRoom);
-  // });
+    // **remoteVideosEl**: the ID/element DOM element that will hold remote videos
+    remoteVideosEl: 'remoteVideos',
+
+    // **autoRequestMedia**: immediately ask for camera access
+    autoRequestMedia: true,
+  });
+
+  // The room name is the same as our socket connection.
+  webrtc.on('readyToCall', function() {
+    webrtc.joinRoom(ioRoom);
+  });
 
   // **Whiteboard**
-  
+
   // Set properties of the whiteboard.
   App.canvas = $('#whiteboard');
   App.canvas[0].width = window.innerWidth;
   App.canvas[0].height = window.innerHeight * 0.7;
-  App.context = App.canvas[0].getContext("2d");
+  App.context = App.canvas[0].getContext('2d');
 
   // Set properties of the mouse click.
   App.mouse = {
     click: false,
     drag: false,
     x: 0,
-    y: 0
+    y: 0,
   };
 
   // Initialize pen properties.
@@ -50,21 +50,19 @@ App.init = function() {
     fillStyle: 'solid',
     strokeStyle: '#000000',
     lineWidth: 2,
-    lineCap: 'round'
+    lineCap: 'round',
   };
 
-  // ```App.isAnotherUserActive``` is a Boolean that signals whether another user is currently drawing. The current implementation is such that only 1 user can draw at a time, i.e. simultaneous drawing is forbidden. To get rid of this functionality, remove  ```App.isAnotherUserActive``` and conditional loops that require it. 
+  // ```App.isAnotherUserActive``` is a Boolean that signals whether another user is currently drawing. The current implementation is such that only 1 user can draw at a time, i.e. simultaneous drawing is forbidden. To get rid of this functionality, remove  ```App.isAnotherUserActive``` and conditional loops that require it.
   App.isAnotherUserActive = false;
 
-  // ```App.stroke``` is an array of [x,y] coordinates for one drawing element. They are stored here, emitted ([in initialize.js](../docs/initialize.html)), and sent to [sockets.js](../docs/sockets.html). Once sent, ```App.stroke``` is emptied. 
+  // ```App.stroke``` is an array of [x,y] coordinates for one drawing element. They are stored here, emitted ([in initialize.js](../docs/initialize.html)), and sent to [sockets.js](../docs/sockets.html). Once sent, ```App.stroke``` is emptied.
   App.stroke = [];
 
-  // ```App.prevPixel``` contains only 1 [x,y] coordinate pair - the coordinates of the previous pixel drawn. This is used in ```App.socket.on('drag'...``` for smooth rendering of drawn elements by other users. 
+  // ```App.prevPixel``` contains only 1 [x,y] coordinate pair - the coordinates of the previous pixel drawn. This is used in ```App.socket.on('drag'...``` for smooth rendering of drawn elements by other users.
   App.prevPixel = [];
 
-
   // **Methods**
-
 
   // Draw according to coordinates.
   App.draw = function(x, y) {
@@ -72,22 +70,23 @@ App.init = function() {
     App.context.stroke();
   };
 
-  App.touchDraw = function (e) {
+  App.touchDraw = function(e) {
     e.preventDefault();
     if (lastPt !== null) {
       App.context.beginPath();
       App.context.moveTo(lastPt.x, lastPt.y);
-      App.context.lineTo(e.touches[0].pageX, e.touches[0].pageY)
+      App.context.lineTo(e.touches[0].pageX, e.touches[0].pageY);
       App.context.stroke();
     }
+
     lastPt = {x: e.touches[0].pageX, y: e.touches[0].pageY};
   };
 
-  App.touchEnd = function (e) {
+  App.touchEnd = function(e) {
     console.log('touching ended');
     e.preventDefault();
     lastPt = null;
-  }
+  };
 
   // Initialize before drawing: copy pen properties to ```App.context```, beginPath and set the starting coordinates to ```moveToX``` and ```moveToY```.
   App.initializeMouseDown = function(pen, moveToX, moveToY) {
@@ -102,13 +101,11 @@ App.init = function() {
     App.context.moveTo(moveToX, moveToY);
   };
 
-
-
   // **Socket events**
 
   // Draw the board upon join.
   App.socket.on('join', function(board) {
-    console.log("Joining the board.");
+    console.log('Joining the board.');
 
     // Check for null board data.
     if (board) {
@@ -124,21 +121,21 @@ App.init = function() {
           for (var j = 0; j < strokesArray.length; j++) {
             App.draw(strokesArray[j][0], strokesArray[j][1]);
           }
+
           App.context.closePath();
         }
       }
     }
   });
 
-
-  // If another user is drawing, App.socket will receive a 'drag' event. App listens for the drag event and renders the drawing element created by the other user. 
-  // Note that App prevents the current user from drawing while the other user is still drawing. 
+  // If another user is drawing, App.socket will receive a 'drag' event. App listens for the drag event and renders the drawing element created by the other user.
+  // Note that App prevents the current user from drawing while the other user is still drawing.
   App.socket.on('drag', function(data) {
     App.isAnotherUserActive = true;
-    console.log("Receiving data from another user:", data);
+    console.log('Receiving data from another user:', data);
 
-    // ```App.prevPixel``` is an array of the previous coordinates sent, so drawing is smoothly rendered across different browsers. 
-    // If the ```App.prevPixel``` array is empty (i.e., this is the first pixel of the drawn element), then prevPixel is set as the coordinates of the current mouseclick. 
+    // ```App.prevPixel``` is an array of the previous coordinates sent, so drawing is smoothly rendered across different browsers.
+    // If the ```App.prevPixel``` array is empty (i.e., this is the first pixel of the drawn element), then prevPixel is set as the coordinates of the current mouseclick.
     if (App.prevPixel.length === 0) {
       App.prevPixel = data.coords;
     }
@@ -147,7 +144,7 @@ App.init = function() {
     App.initializeMouseDown(data.pen, App.prevPixel[0], App.prevPixel[1]);
     App.draw(data.coords[0], data.coords[1]);
 
-    // Set the current coordinates as App.prevPixel, so the next pixel rendered will be smoothly drawn from these coordinate points to the next ones. 
+    // Set the current coordinates as App.prevPixel, so the next pixel rendered will be smoothly drawn from these coordinate points to the next ones.
     App.prevPixel = data.coords;
 
   });
