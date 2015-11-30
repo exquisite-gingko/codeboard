@@ -106,7 +106,6 @@
         })
       .then(function (response) {
         console.log('signin response received');
-        // return response;
         document.location = '/new';
       })
       .catch(function (err) {
@@ -124,9 +123,8 @@
         })
       .then(function (response) {
         console.log('response login', response);
-        // return response;
-        self.getFiles();
         document.location = '/new';
+        self.getFiles();
       })
       .catch(function (err) {
         console.log('Error Matching Password');
@@ -136,11 +134,25 @@
       });
     };
 
-    //THis function is currently being called when you hit the button so the first time you hit the button no data 
-    //will be returned because the event to go get the data will not have returned yet
-    //this is only for testing purposes though so remember to hit the button twice to check stuff here
+    // self.getNew = function () {
+    //   //pings /new route
+    //   return $http({
+    //     method: 'GET',
+    //     url: '/new'
+    //   })
+    //   .then(function (response) {
+    //     //from the response trigger the get
+    //     //and then redurect
+    //     console.log('response',response);
+    //   })
+    //   .catch(function (err) {
+    //     console.log('Error getting new board');
+    //   });
+    // };
+
+    //find all the users files and show to the user in drop down
     self.getFiles = function () {
-      console.log('get files------->', self.canvases);
+      console.log('CLICKED!!')
       return $http({
         method: 'GET',
         url: '/api/userBoards'
@@ -149,16 +161,19 @@
         console.log('response GETTING', response);
         //append these files to the screen!
         // return response.data.messages;
+        console.log('response--------->', response.data.messages);
         var arrayRec = response.data.messages; //return the array of names of saved files
         //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
-        // self.canvases = response.data.messages;
-        // if (response) {
-
-        arrayRec.map(function(name) {
-          self.canvases.push(name);
-        });
+        // arrayRec.map(function(name) {
+        //   self.canvases.push(name);
+        // });
+        for (var i = 0; i < arrayRec.length; i++) {
+          if (arrayRec[i][0] !== 'null') {
+            self.canvases.push(arrayRec[i]);
+          }
+        }
         console.log('CANVASES!!', self.canvases);
-        
+
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
@@ -190,14 +205,14 @@
 
     //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
     self.getOne = function () {
-      //click on a certain one
-      //get the name that clicked on
+      //FIND HOW TO PASS THE BOARD ID TO THE GET REQUEST
+      console.log('SELF', self.canvases);
       return $http({
         method: 'GET',
-        url: '/api/save'
+        url: '/api/getOneBoard'
       })
       .then(function (response) {
-        document.location = '/' + self.boardId;
+        document.location = '/' + response.messages;
       })
       .catch(function (err) {
         console.log('Error getting named file');
