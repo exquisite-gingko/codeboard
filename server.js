@@ -151,11 +151,11 @@ app.post('/api/login', function (req, res) {
 //request all the board data from the database for the specific user
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
-  console.log('session', req.session.user);
   console.log('IN USERBOARDS');
   var user = req.session.user;
-  Board.boardModel.find({})
+  Board.boardModel.find({}).where('email').equals(user)
   .then(function (boards) {
+    console.log('BOARDSSSS!!!!', boards);
     var data = [];
     boards.forEach(function (board) {
       if (board.boardName !== 'null') {
