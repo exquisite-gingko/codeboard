@@ -67,12 +67,14 @@ var connect = function(boardUrl, board, io) {
     });
 
     socket.on('removeLast', function () {
+      console.log('remove last');
       Board.boardModel.findOne({id: id})
       .then(function (board) {
-        if(board.strokes.length) {
+        console.log(board.strokes.length);
+        if (board.strokes.length) {
           board.strokes.splice(board.strokes.length - 1, 1);
         }
-        socket.broadcast.emit('removeLast', )
+        socket.broadcast.emit('removeLast');
         return board.save();
       })
       .catch(function (error) {

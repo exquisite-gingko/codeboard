@@ -184,7 +184,7 @@ $(function() {
       App.stroke.push([App.mouse.x, App.mouse.Y]);
     },
     drag: function (x, y) {
-      // App.socket.emit('removeLast');
+      App.socket.emit('removeLast');
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
