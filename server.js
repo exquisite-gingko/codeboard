@@ -19,15 +19,12 @@ var session = require('express-session');
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-
-
 app.use(session({
   secret: 'nofflePenguin',
   resave: false,
+  saveUninitialized: true,
   cookie: { maxAge: 67967000000 }
 }));
-
-
 
 // **Static folder for serving application assets**
 app.use('/', express.static(__dirname + '/public'));
@@ -70,34 +67,47 @@ app.get('/new', function(req, res) {
     users: 0,
     strokes: []
   });
-  board.save()
+
+  return board.save()
   .then(function (board) {
+
     console.log(id);
-    res.redirect('/' + id);
+    return res.redirect('/' + id);
+
   })
   .catch(function (err) {
-    res.redirect('/');
+
+    return res.redirect('/');
+
   });
 });
 
+
 //post the users details to the database
 app.post('/api/signUp', function (req, res) {
-  console.log('IN signUp');
   var email = req.body.email;
   var password = req.body.password;
-  var user = new Board.userModel({
-    email: email,
-    password: password
-  });
-  user.save()
+  utils.encryptPassword(password)
+  .then(function(data) {
+
+    var user = new Board.userModel({
+      email: email,
+      password: data
+    });
+    return user.save();
+
+  })
   .then(function (user) {
     //send the response to the /new route
     req.session.user = user.email;
-    res.redirect('/new');
+    return res.redirect('/new');
+
   })
   .catch(function (err) {
+
     console.log(err);
-    res.status(500).send();
+    return res.status(500).send();
+
   });
 });
 
@@ -105,38 +115,47 @@ app.post('/api/signUp', function (req, res) {
 
 //check the user detials in the database
 app.post('/api/login', function (req, res) {
-  console.log('LOGIN');
   var email = req.body.email;
   var password = req.body.password;
+  var u;
   Board.userModel.findOne({email: email})
   .then(function (user) {
     if (!user) {
-      res.status(400).json({message:'User does not exist'});
-    } else if (password === user.password) {
-      //SESSION SEND HERE
-      req.session.user = user.email;
-      console.log('session Last bit', req.session);
-      //NNED THIS TO STAY ON THE SAME BOARD
-      res.status(200).json({message:user});
+      //so this does not move to the next then, rather the next catch block
+      throw new Error('User does not exist');
     } else {
-      console.log('bad pass');
-      res.status(401).json({message:'Incorrect Password'});
+      u = user;
+      return utils.decrypt(user.password, password);
+    }
+  })
+  .then(function (boolean) {
+    if (boolean) {
+      console.log('correct password');
+      req.session.user = u.email;
+      return res.status(200).json({message: boolean});
+    } else {
+      console.log('Incorrect Password');
+      return res.status(401).json({message:'Incorrect Password'});
     }
   })
   .catch(function (err) {
-    console.log(err);
-    res.status(500).send();
+    if(err.message === 'User does not exist'){
+      return res.status(400).json({message:'User does not exist'});
+    } else {
+      console.log(err);
+      res.status(500).send();
+    }
   });
 });
 
 //request all the board data from the database for the specific user
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
-  console.log('session', req.session.user);
   console.log('IN USERBOARDS');
   var user = req.session.user;
-  Board.boardModel.find({})
+  Board.boardModel.find({}).where('email').equals(user)
   .then(function (boards) {
+    console.log('BOARDSSSS!!!!', boards);
     var data = [];
     boards.forEach(function (board) {
       if (board.boardName !== 'null') {

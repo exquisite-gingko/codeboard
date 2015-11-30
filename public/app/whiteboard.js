@@ -95,6 +95,7 @@
 
   function auth ($http) {
     var self = this;
+    self.canvases = [];
 
     self.signUp = function() {
       var data = { email : self.email, password: self.password };
@@ -104,8 +105,9 @@
         data: data
         })
       .then(function (response) {
-        console.log('response', response);
-        return response;
+        console.log('signin response received');
+        // return response;
+        document.location = '/new';
       })
       .catch(function (err) {
         console.log('Error Saving Credentials');
@@ -147,17 +149,21 @@
         console.log('response GETTING', response);
         //append these files to the screen!
         // return response.data.messages;
-        console.log(response.data.messages); //return the array of names of saved files
+        var arrayRec = response.data.messages; //return the array of names of saved files
         //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
-        self.canvases = response.data.messages;
+        // self.canvases = response.data.messages;
+        // if (response) {
+
+        arrayRec.map(function(name) {
+          self.canvases.push(name);
+        });
+        console.log('CANVASES!!', self.canvases);
+        
       })
       .catch(function (err) {
         console.log('Error Finding Any Saved Boards');
       });
     };
-    //NB HARD CODED LINE
-    //this hard coded line gets added to the html
-    self.canvases = ['sea','sand','surf'];
 
     //function to update the board currently on with a new file name
     self.saveFile = function () {
