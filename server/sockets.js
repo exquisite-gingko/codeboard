@@ -50,6 +50,8 @@ var connect = function(boardUrl, board, io) {
     //When stroke is finished, add it to our db.
     socket.on('end', function() {
       var finishedStroke = socket.stroke;
+      console.log('end');
+      console.log(finishedStroke);
 
       //Update the board with the new stroke.
       Board.boardModel.update({id: id},{$push: {strokes: finishedStroke} },{upsert:true},function(err, board){
@@ -87,8 +89,3 @@ var connect = function(boardUrl, board, io) {
 
 // Required by [server.js](../documentation/server.html)
 module.exports = connect;
-
-
-
-
-
