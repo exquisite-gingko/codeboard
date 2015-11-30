@@ -161,6 +161,7 @@ App.init = function() {
 
   App.socket.on('refreshBoard', function (board) {
     console.log('refreshing');
+    App.clearBoard();
     App.board = board;
     App.redrawBoard(board);
   });

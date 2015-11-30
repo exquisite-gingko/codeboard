@@ -212,7 +212,6 @@ $(function() {
       App.socket.emit('drag', [x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('end', null);
-      App.clearBoard();
       App.socket.emit('getBoard');
     }
   };

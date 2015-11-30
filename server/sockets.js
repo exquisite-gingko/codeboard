@@ -79,6 +79,7 @@ var connect = function(boardUrl, board, io) {
             board.strokes.splice(board.strokes.length - 1, 1);
           }
         }
+        socket.emit('removeLast');
         socket.broadcast.emit('removeLast');
         return board.save();
       })
@@ -91,7 +92,8 @@ var connect = function(boardUrl, board, io) {
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         console.log('get board');
-        socket.emit('join', board);
+        socket.emit('refreshBoard', board);
+        socket.broadcast.emit('refreshBoard', board);
       })
       .catch(function (error) {
         console.log(error);
