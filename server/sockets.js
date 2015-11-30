@@ -91,7 +91,6 @@ var connect = function(boardUrl, board, io) {
           board.strokes.splice(board.strokes.length - 1, 1);
         }
         socket.emit('removeLast');
-        socket.broadcast.emit('removeLast');
         return board.save();
       })
       .catch(function (error) {
