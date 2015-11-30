@@ -70,6 +70,9 @@ var connect = function(boardUrl, board, io) {
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         if (board.strokes.length) {
+          while (board.strokes.length && board.strokes[board.strokes.length - 1] === null) {
+            board.strokes.splice(board.strokes.length - 1, 1);
+          }
           if (board.strokes[board.strokes.length - 1].path[0][0] == startCoords[0] && board.strokes[board.strokes.length - 1].path[0][1] == startCoords[1]) {
             board.strokes.splice(board.strokes.length - 1, 1);
           }
@@ -88,6 +91,9 @@ var connect = function(boardUrl, board, io) {
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         if (board.strokes.length) {
+          while (board.strokes.length && board.strokes[board.strokes.length - 1] === null) {
+            board.strokes.splice(board.strokes.length - 1, 1);
+          }
           board.strokes.splice(board.strokes.length - 1, 1);
         }
         socket.emit('removeLast');
