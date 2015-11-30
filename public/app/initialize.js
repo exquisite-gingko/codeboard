@@ -77,16 +77,11 @@ $(function() {
 
   // On mouse dragend detection, tell socket that we have finished drawing.
   App.canvas.on('dragend', function(e) {
-    var coords = {
-      x: e.offsetX,
-      y: e.offsetY
-    };
     if (!App.isAnotherUserActive) {
       if (App.drawType === 'free') {
         end();
       } else if (App.drawType === 'rectangle') {
-        console.log(coords);
-        drawRectangle.end(coords.x, coords.y);
+        drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
         // drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
       }
     } else {
