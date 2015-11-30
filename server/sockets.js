@@ -33,7 +33,7 @@ var connect = function(boardUrl, board, io) {
       };
     });
 
-    socket.on('drag', function(coords) {
+    socket.on('drag', function (coords) {
       //Push coordinates into the stroke's drawing path.
       socket.stroke.path.push(coords);
       // This payload will be sent back to all sockets *except the socket
@@ -72,13 +72,10 @@ var connect = function(boardUrl, board, io) {
       console.log('remove last');
       Board.boardModel.findOne({id: id})
       .then(function (board) {
-        console.log(board.strokes.length);
         if (board.strokes.length) {
-          console.log(board.strokes[board.strokes.length - 1][0]);
-          console.log(startCoords[0]);
-          console.log(board.strokes[board.strokes.length - 1][1]);
-          console.log(startCoords[1]);
-          if (board.strokes[board.strokes.length - 1][0] == startCoords[0] && board.strokes[board.strokes.length - 1][1] == startCoords[1]) {
+          console.log(board.strokes[board.strokes.length - 1].path[0][0]);
+          console.log(startCoords);
+          if (board.strokes[board.strokes.length - 1].path[0][0] == startCoords[0] && board.strokes[board.strokes.length - 1].path[0][1] == startCoords[1]) {
             board.strokes.splice(board.strokes.length - 1, 1);
           }
         }
