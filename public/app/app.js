@@ -146,10 +146,19 @@ App.init = function() {
     }
   };
 
+  App.clearBoard = function () {
+    App.context.clearRect(0, 0, App.canvas[0].width, App.canvas[0].height);
+  };
+
   // **Socket events**
 
   // Draw the board upon join.
   App.socket.on('join', function (board) {
+    App.board = board;
+    App.redrawBoard(board);
+  });
+
+  App.socket.on('refreshBoard', function (board) {
     App.board = board;
     App.redrawBoard(board);
   });

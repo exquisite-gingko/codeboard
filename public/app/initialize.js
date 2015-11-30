@@ -39,6 +39,8 @@ $(function() {
       x: e.offsetX,
       y: e.offsetY
     };
+    console.log('mousedown');
+    console.log(App.startDrag);
 
     // Allow user drawing only if other users are not drawing.
     if (!App.isAnotherUserActive) {     
@@ -190,7 +192,8 @@ $(function() {
       App.stroke.push([App.mouse.x, App.mouse.Y]);
     },
     drag: function (x, y) {
-      App.socket.emit('removeLast');
+      console.log('drag ', App.startDrag.x, ' ', App.startDrag.y, ' ', x, ' ', y);
+      App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
@@ -200,9 +203,8 @@ $(function() {
       App.socket.emit('end', null);
     },
     end: function (x, y) {
-      console.log(x, ' ', y);
-      console.log(App.startDrag.x, ' ', App.startDrag.y);
-      App.socket.emit('removeLast');
+      console.log('end ', App.startDrag.x, ' ', App.startDrag.y, ' ', x, ' ', y);
+      App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
@@ -211,6 +213,8 @@ $(function() {
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('end', null);
       console.log(App.board);
+      App.clearBoard();
+      App.socket.emit('getBoard');
     }
   };
 

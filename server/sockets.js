@@ -68,13 +68,19 @@ var connect = function(boardUrl, board, io) {
       delete socket.stroke;
     });
 
-    socket.on('removeLast', function () {
+    socket.on('removeLast', function (startCoords) {
       console.log('remove last');
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         console.log(board.strokes.length);
         if (board.strokes.length) {
-          board.strokes.splice(board.strokes.length - 1, 1);
+          console.log(board.strokes[board.strokes.length - 1][0]);
+          console.log(startCoords[0]);
+          console.log(board.strokes[board.strokes.length - 1][1]);
+          console.log(startCoords[1]);
+          if (board.strokes[board.strokes.length - 1][0] == startCoords[0] && board.strokes[board.strokes.length - 1][1] == startCoords[1]) {
+            board.strokes.splice(board.strokes.length - 1, 1);
+          }
         }
         socket.broadcast.emit('removeLast');
         return board.save();
@@ -83,7 +89,17 @@ var connect = function(boardUrl, board, io) {
         console.log(error);
       });
     });
-    
+
+    socket.on('getBoard', function () {
+      Board.boardModel.findOne({id: id})
+      .then(function (board) {
+        console.log('get board');
+        socket.broadcast.emit('refreshBoard', board);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    });
   });
 };
 
