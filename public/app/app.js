@@ -85,12 +85,14 @@ App.init = function() {
   };
 
   App.drawRectangle = function (x1, y1, x2, y2) {
-    App.context.fillStyle = 'rgba(32, 32, 32, 0.5)';
-    App.context.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
+    App.context.strokeStyle = 'rgba(32, 32, 32, 0.5)';
+    App.context.strokeRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
   };
 
   App.removeRectangle = function (x1, y1, x2, y2) {
-    App.context.clearRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
+    console.log('remove rect', x1, ' ', y1, ' ', x2, ' ', y2);
+    App.context.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    App.context.strokeRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2), Math.abs(y1 - y2));
   };
 
   App.touchDraw = function(e) {

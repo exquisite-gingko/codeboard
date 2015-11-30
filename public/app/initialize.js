@@ -60,10 +60,6 @@ $(function() {
   // On mousedrag detection, start to render drawing elements based on user's cursor coordinates.
   App.canvas.on('drag', function(e) {
     // Allow user drawing only if other users are not drawing.
-    App.previousDrag = {
-      x: e.offsetX,
-      y: e.offsetY
-    };
     if (!App.isAnotherUserActive) {
       if (App.mouse.click) {
         if (App.drawType === 'free') {
@@ -75,6 +71,10 @@ $(function() {
     } else {
       console.log('Another user is drawing - please wait.');
     }
+    App.previousDrag = {
+      x: e.offsetX,
+      y: e.offsetY
+    };
   });
 
   // On mouse dragend detection, tell socket that we have finished drawing.
@@ -192,7 +192,8 @@ $(function() {
       App.stroke.push([App.mouse.x, App.mouse.Y]);
     },
     drag: function (x, y) {
-      console.log('drag ', App.startDrag.x, ' ', App.startDrag.y, ' ', x, ' ', y);
+      App.drawRectangle(x, y, App.startDrag.x, App.startDrag.y);
+      App.removeRectangle(App.previousDrag.x, App.previousDrag.y, App.startDrag.x, App.startDrag.y);
       App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
@@ -203,7 +204,6 @@ $(function() {
       App.socket.emit('end', null);
     },
     end: function (x, y) {
-      console.log('end ', App.startDrag.x, ' ', App.startDrag.y, ' ', x, ' ', y);
       App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
@@ -212,7 +212,6 @@ $(function() {
       App.socket.emit('drag', [x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('end', null);
-      console.log(App.board);
       App.clearBoard();
       App.socket.emit('getBoard');
     }
