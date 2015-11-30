@@ -60,6 +60,10 @@ $(function() {
   // On mousedrag detection, start to render drawing elements based on user's cursor coordinates.
   App.canvas.on('drag', function(e) {
     // Allow user drawing only if other users are not drawing.
+    App.previousDrag = {
+      x: e.offsetX,
+      y: e.offsetY
+    };
     if (!App.isAnotherUserActive) {
       if (App.mouse.click) {
         if (App.drawType === 'free') {
@@ -75,17 +79,13 @@ $(function() {
 
   // On mouse dragend detection, tell socket that we have finished drawing.
   App.canvas.on('dragend', function(e) {
-    var coords = {
-      x: e.offsetX,
-      y: e.offsetY
-    };
+    console.log('before if');
     if (!App.isAnotherUserActive) {
       if (App.drawType === 'free') {
         end();
       } else if (App.drawType === 'rectangle') {
-        console.log(coords);
-        drawRectangle.end(coords.x, coords.y);
-        // drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
+        console.log('after if');
+        drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
       }
     } else {
       console.log('Another user is drawing - please wait.');

@@ -91,7 +91,7 @@ var connect = function(boardUrl, board, io) {
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         console.log('get board');
-        socket.broadcast.emit('refreshBoard', board);
+        socket.emit('join', board);
       })
       .catch(function (error) {
         console.log(error);

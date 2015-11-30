@@ -124,8 +124,7 @@ App.init = function() {
   };
 
   App.redrawBoard = function (board) {
-    console.log("Joining the board.");
-
+    console.log(board);
     // Check for null board data.
     if (board) {
       for (var i = 0; i < board.strokes.length; i++) {
@@ -135,7 +134,7 @@ App.init = function() {
           var strokesArray = board.strokes[i].path;
           var penProperties = board.strokes[i].pen;
           App.initializeMouseDown(penProperties, strokesArray[0][0], strokesArray[0][1]);
-
+          console.log(strokesArray);
           // Draw the path according to the strokesArray (array of coordinate tuples).
           for (var j = 0; j < strokesArray.length; j++) {
             App.draw(strokesArray[j][0], strokesArray[j][1]);
@@ -159,6 +158,7 @@ App.init = function() {
   });
 
   App.socket.on('refreshBoard', function (board) {
+    console.log('refreshing');
     App.board = board;
     App.redrawBoard(board);
   });
