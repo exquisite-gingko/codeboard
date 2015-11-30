@@ -57,28 +57,21 @@ app.get('/new', function(req, res) {
   // Create a new mongoose board model.
   console.log('IN NEW BOARD');
   var id = utils.createId();
-  console.log('ID----------',id);
-  req.session.id = id;
-
   var board = new Board.boardModel({
     id: id,
     boardName: 'null',
-    userEmail: req.session.user,
+    email: req.session.user,
     users: 0,
     strokes: []
   });
-
   return board.save()
+
   .then(function (board) {
-
-    console.log(id);
-    return res.redirect('/' + id);
-
+    //return res.status(200).json({message: id});
+    res.redirect('/'+id);
   })
   .catch(function (err) {
-
     return res.redirect('/');
-
   });
 });
 
@@ -100,8 +93,7 @@ app.post('/api/signUp', function (req, res) {
   .then(function (user) {
     //send the response to the /new route
     req.session.user = user.email;
-    return res.redirect('/new');
-
+    return res.status(200).json({message: 'Successful signup'});
   })
   .catch(function (err) {
 
@@ -152,15 +144,17 @@ app.post('/api/login', function (req, res) {
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
   console.log('IN USERBOARDS');
-  var user = req.session.user;
-  Board.boardModel.find({}).where('email').equals(user)
+  // var user = req.session.user;
+  Board.boardModel.find({ email: req.session.user})
+  //.select({ "name": 1, "_id": 0});
   .then(function (boards) {
-    console.log('BOARDSSSS!!!!', boards);
+    console.log('BOARDSSSS!!!!-------1 all from query', boards);
     var data = [];
     boards.forEach(function (board) {
-      if (board.boardName !== 'null') {
-        console.log('boardName CURRENT', board.boardName);
-        data.push(board.boardName);
+      console.log('BOARDS!! each one ',board);
+      if (board.boardName !== 'null' || board.boardName !== undefined) {
+        console.log('boardName CURRENT', board.boardName, board.id);
+        data.push([board.boardName, board.id]);
       }
     });
     console.log('all names if the saved boards',data);
@@ -171,7 +165,8 @@ app.get('/api/userBoards', function (req, res) {
 //ON CLICK OF ONE OF THESE BOARDS DISPALYED ON THE SCREEN
 //go to the database and get the id of the board and redirect to /+id
 app.get('/api/getOneBoard', function (req, res) {
-   //get the board name clicked on 
+   //get the board name clicked on
+
   Board.boardModel.findOne({boardName: boardName})
   .then(function (user) {
     var boardId = user.id;
@@ -188,9 +183,10 @@ app.post('/api/save', function (req, res) {
   var boardId = req.body.boardId;
   Board.boardModel.findOne({ id: boardId})
   .then(function (board) {
+    board.boardName = req.body.fileName;
     console.log('BOARD to update---------', board);
-    var query = { boardName : board.boardName };
-    return Board.boardModel.update(query, { $set: { boardName: req.body.fileName }});
+    return board.save();
+    //return Board.boardModel.update(query, { $set: { boardName: req.body.fileName }});
   })
   .then(function (board) {
     console.log('RETURNED LAST BOARD', board);
