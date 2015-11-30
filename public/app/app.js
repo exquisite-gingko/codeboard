@@ -151,6 +151,12 @@ App.init = function() {
     App.context.clearRect(0, 0, App.canvas[0].width, App.canvas[0].height);
   };
 
+  App.removeLast = function () {
+    console.log('remove last');
+    App.socket.emit('removeLast');
+    App.socket.emit('getBoard');
+  }
+
   // **Socket events**
 
   // Draw the board upon join.

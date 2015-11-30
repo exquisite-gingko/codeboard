@@ -68,16 +68,30 @@ var connect = function(boardUrl, board, io) {
       delete socket.stroke;
     });
 
+    socket.on('removeLastSquare', function (startCoords) {
+      console.log('remove last');
+      Board.boardModel.findOne({id: id})
+      .then(function (board) {
+        if (board.strokes.length) {
+          if (board.strokes[board.strokes.length - 1].path[0][0] == startCoords[0] && board.strokes[board.strokes.length - 1].path[0][1] == startCoords[1]) {
+            board.strokes.splice(board.strokes.length - 1, 1);
+          }
+        }
+        socket.emit('removeLast');
+        socket.broadcast.emit('removeLast');
+        return board.save();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    });
+
     socket.on('removeLast', function (startCoords) {
       console.log('remove last');
       Board.boardModel.findOne({id: id})
       .then(function (board) {
         if (board.strokes.length) {
-          console.log(board.strokes[board.strokes.length - 1].path[0][0]);
-          console.log(startCoords);
-          if (board.strokes[board.strokes.length - 1].path[0][0] == startCoords[0] && board.strokes[board.strokes.length - 1].path[0][1] == startCoords[1]) {
-            board.strokes.splice(board.strokes.length - 1, 1);
-          }
+          board.strokes.splice(board.strokes.length - 1, 1);
         }
         socket.emit('removeLast');
         socket.broadcast.emit('removeLast');

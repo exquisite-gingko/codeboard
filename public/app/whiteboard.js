@@ -69,9 +69,13 @@
       console.log('drawing square');
       $rootScope.app.drawType = 'rectangle';
     };
+    var removeLast = function () {
+      $rootScope.app.removeLast();
+    };
     return {
       changePen: changePen,
-      drawSquare: drawSquare
+      drawSquare: drawSquare,
+      removeLast: removeLast
     };
   }
 
@@ -91,6 +95,9 @@
     };
     self.drawSquare = function () {
       tools.drawSquare();
+    };
+    self.removeLast = function () {
+      tools.removeLast();
     };
   }
 

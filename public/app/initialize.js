@@ -194,7 +194,7 @@ $(function() {
     drag: function (x, y) {
       App.drawRectangle(x, y, App.startDrag.x, App.startDrag.y);
       App.removeRectangle(App.previousDrag.x, App.previousDrag.y, App.startDrag.x, App.startDrag.y);
-      App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('removeLastSquare', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
@@ -204,7 +204,7 @@ $(function() {
       App.socket.emit('end', null);
     },
     end: function (x, y) {
-      App.socket.emit('removeLast', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('removeLastSquare', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
