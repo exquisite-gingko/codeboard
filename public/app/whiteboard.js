@@ -147,7 +147,6 @@
       })
       .catch(function (err) {
         console.log('Error Matching Password');
-        console.log('Error ------', err.data.message);
         self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE
       });
     };
@@ -203,23 +202,6 @@
       .catch(function (err) {
         console.log('Error Saving Files');
       });
-    };
-
-    //HAVE NOT LINKED THIS FUNCTION UP YET!! CANT TEST UNTIL FRONT END HAS SAVED FILES ON IT grrr
-    self.getOne = function () {
-      //FIND HOW TO PASS THE BOARD ID TO THE GET REQUEST
-      console.log('SELF', self.canvases);
-      return $http({
-        method: 'GET',
-        url: '/api/getOneBoard'
-      })
-      .then(function (response) {
-        document.location = '/' + response.messages;
-      })
-      .catch(function (err) {
-        console.log('Error getting named file');
-      });
-
     };
 
     self.logout = function () {

@@ -163,20 +163,6 @@ app.get('/api/userBoards', function (req, res) {
   });
 });
 
-//ON CLICK OF ONE OF THESE BOARDS DISPALYED ON THE SCREEN
-//go to the database and get the id of the board and redirect to /+id
-app.get('/api/getOneBoard', function (req, res) {
-   //get the board name clicked on
-
-  Board.boardModel.findOne({boardName: boardName})
-  .then(function (user) {
-    var boardId = user.id;
-    res.status(200).json({ messages: boardId });
-  });
-  
-});
-  
-
 //ON SAVE
 app.post('/api/save', function (req, res) {
   //take the name saved with it and get the user details from the session and save the new board
@@ -196,7 +182,6 @@ app.post('/api/save', function (req, res) {
   
 });
 
-
 //LOGOUT
 app.delete('/api/logout', function (req, res) {
 
@@ -207,7 +192,6 @@ app.delete('/api/logout', function (req, res) {
   });
 
 });
-
 
 
 // **Wildcard route & board id handler.**
