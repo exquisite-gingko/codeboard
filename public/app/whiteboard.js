@@ -11,9 +11,6 @@
       $stateProvider
         .state('eraser', {
           controller: 'toolbar'
-        })
-        .state('whiteboard', {
-          controller: 'auth'
         });
     })
     // Set App to the root scope. 
@@ -150,9 +147,8 @@
       })
       .catch(function (err) {
         console.log('Error Matching Password');
-        //WANT TO LOG THIS ERROR
         console.log('Error ------', err.data.message);
-        self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE!!
+        self.errorMessage = err;//WANT THIS TO SHOW ON THE LOGIN PAGE
       });
     };
 
@@ -168,10 +164,6 @@
         //append these files to the screen!
         // return response.data.messages;
         var arrayRec = response.data.messages; //return the array of names of saved files
-        //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
-        // arrayRec.map(function(name) {
-        //   self.canvases.push(name);
-        // });
         self.canvases = [];
         for (var i = 0; i < arrayRec.length; i++) {
           if (arrayRec[i][0] !== 'null') {
