@@ -17,14 +17,6 @@ $(function() {
 
   // Add the button collapse init for materialize
   $(".button-collapse").sideNav();
-  $(".dropdown-button").dropdown();
-
-  $('.collapsible').collapsible({
-      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-  });
-
-   $('.modal-trigger').leanModal();
-   
 
   var lastPt = null;
   // **Mouse Events**
@@ -41,7 +33,8 @@ $(function() {
     };
 
     // Allow user drawing only if other users are not drawing.
-    if (!App.isAnotherUserActive) {     
+    if (!App.isAnotherUserActive) {
+     
       console.log("User has started to draw.");
       console.log(App.drawType);
       if (App.drawType === 'free') {
@@ -69,6 +62,7 @@ $(function() {
     } else {
       console.log('Another user is drawing - please wait.');
     }
+
     App.previousDrag = {
       x: e.offsetX,
       y: e.offsetY
@@ -82,7 +76,6 @@ $(function() {
         end();
       } else if (App.drawType === 'rectangle') {
         drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
-        // drawRectangle.end(App.previousDrag.x, App.previousDrag.y);
       }
     } else {
       console.log('Another user is drawing - please wait.');
@@ -133,7 +126,7 @@ $(function() {
     App.socket.emit('start', App.pen);
 
     // Add the first mouse coordinates to the ```stroke``` array for storage.
-    App.stroke.push([App.mouse.x, App.mouse.Y]);
+    App.stroke.push([App.mouse.x, App.mouse.y]);
     App.socket.emit('drag', [App.mouse.x, App.mouse.y]);
   }
 
@@ -189,9 +182,7 @@ $(function() {
       App.stroke.push([App.mouse.x, App.mouse.Y]);
     },
     drag: function (x, y) {
-      App.drawRectangle(x, y, App.startDrag.x, App.startDrag.y);
-      App.removeRectangle(App.previousDrag.x, App.previousDrag.y, App.startDrag.x, App.startDrag.y);
-      App.socket.emit('removeLastSquare', [App.startDrag.x, App.startDrag.y]);
+      // App.socket.emit('removeLast');
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
@@ -199,9 +190,10 @@ $(function() {
       App.socket.emit('drag', [x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('end', null);
+      console.log(App.board);
     },
     end: function (x, y) {
-      App.socket.emit('removeLastSquare', [App.startDrag.x, App.startDrag.y]);
+      App.socket.emit('removeLast');
       App.socket.emit('start', App.pen);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, y]);
@@ -209,8 +201,8 @@ $(function() {
       App.socket.emit('drag', [x, App.startDrag.y]);
       App.socket.emit('drag', [App.startDrag.x, App.startDrag.y]);
       App.socket.emit('end', null);
-      App.socket.emit('getBoard');
+      console.log(App.board);
     }
   };
-
 });
+
