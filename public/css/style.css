@@ -183,3 +183,7 @@ div.buttons {
 .sample-show-hide.ng-hide {
   opacity:0;
 }
+
+.fa-undo {
+  color: black;
+}
