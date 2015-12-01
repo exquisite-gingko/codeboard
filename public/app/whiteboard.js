@@ -11,6 +11,9 @@
       $stateProvider
         .state('eraser', {
           controller: 'toolbar'
+        })
+        .state('whiteboard', {
+          controller: 'auth'
         });
     })
     // Set App to the root scope. 
@@ -93,6 +96,8 @@
     };
   }
 
+//--------------------------------Auth Ctrl------------------------------------------//
+
   function auth ($http) {
     var self = this;
     self.canvases = [];
@@ -113,6 +118,7 @@
       });
     };
 
+
     self.login = function() {
       console.log('in login FUNCTION');
       var data = { email : self.email, password: self.password };
@@ -124,7 +130,6 @@
       .then(function (response) {
         console.log('response login', response);
         document.location = '/new';
-        self.getFiles();
       })
       .catch(function (err) {
         console.log('Error Matching Password');
@@ -134,25 +139,9 @@
       });
     };
 
-    // self.getNew = function () {
-    //   //pings /new route
-    //   return $http({
-    //     method: 'GET',
-    //     url: '/new'
-    //   })
-    //   .then(function (response) {
-    //     //from the response trigger the get
-    //     //and then redurect
-    //     console.log('response',response);
-    //   })
-    //   .catch(function (err) {
-    //     console.log('Error getting new board');
-    //   });
-    // };
-
     //find all the users files and show to the user in drop down
     self.getFiles = function () {
-      console.log('CLICKED!!')
+      console.log('CLICKED!!');
       return $http({
         method: 'GET',
         url: '/api/userBoards'
@@ -161,12 +150,12 @@
         console.log('response GETTING', response);
         //append these files to the screen!
         // return response.data.messages;
-        console.log('response--------->', response.data.messages);
         var arrayRec = response.data.messages; //return the array of names of saved files
         //THIS LINE SHOULD OVERWRITE THE BELOW ARRAY IT DOES IN THE CONSOLE BUT NOT IN THE HTML??
         // arrayRec.map(function(name) {
         //   self.canvases.push(name);
         // });
+        self.canvases = [];
         for (var i = 0; i < arrayRec.length; i++) {
           if (arrayRec[i][0] !== 'null') {
             self.canvases.push(arrayRec[i]);
@@ -180,6 +169,7 @@
       });
     };
 
+    
     //function to update the board currently on with a new file name
     self.saveFile = function () {
       console.log('saving FILES!');
@@ -197,6 +187,9 @@
         console.log('response SAVE', response);
         //trigger get function to update the files available to the user
         self.getFiles();
+        console.log('Called getFiles, now changing state to "whiteboard"');
+        document.location = '/new';
+
       })
       .catch(function (err) {
         console.log('Error Saving Files');
@@ -236,6 +229,7 @@
 
 
     };
+    self.getFiles();
 
   }
 
