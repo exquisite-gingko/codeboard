@@ -59,6 +59,8 @@ app.get('/new', function(req, res) {
   var id = utils.createId();
   var board = new Board.boardModel({
     id: id,
+
+    // FIXME: Let's evaluate to see if we can have it set as the null type as opposed to string
     boardName: 'null',
     email: req.session.user,
     users: 0,
@@ -68,7 +70,7 @@ app.get('/new', function(req, res) {
 
   .then(function (board) {
     //return res.status(200).json({message: id});
-    res.redirect('/'+id);
+    return res.redirect('/'+id);
   })
   .catch(function (err) {
     return res.redirect('/');
@@ -144,9 +146,8 @@ app.post('/api/login', function (req, res) {
 app.get('/api/userBoards', function (req, res) {
   //can I talk to the session object here?? I assume yes!
   console.log('IN USERBOARDS');
-  // var user = req.session.user;
+
   Board.boardModel.find({ email: req.session.user})
-  //.select({ "name": 1, "_id": 0});
   .then(function (boards) {
     console.log('BOARDSSSS!!!!-------1 all from query', boards);
     var data = [];
