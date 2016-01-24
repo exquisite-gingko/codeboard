@@ -1,22 +1,17 @@
 # Coderboard
-[See it live here!](http://hidden-castle-8290.herokuapp.com)
+[See it live here!](http://coderboard-dev.elasticbeanstalk.com/)
 
 Project inherited from SpazzingLicorice
 
 ## Table of Contents
 
-1. [Documentation](#Documentation)
-2. [Usage](#Usage)
-3. [Requirements](#Requirements)
-4. [Development](#development)
+1. [Usage](#Usage)
+2. [Requirements](#Requirements)
+3. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
     2. [Packaging Documentation](#packaging-documentation)
-5. [Team](#team)
-6. [Contributing](#contributing)
-
-## Documentation
-
-View the documentation [here](http://hidden-castle-8290.herokuapp.com/documentation)
+4. [Team](#team)
+5. [Contributing](#contributing)
 
 ## Usage
 
